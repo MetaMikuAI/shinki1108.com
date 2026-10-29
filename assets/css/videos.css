@@ -1,0 +1,211 @@
+/* =========================================================
+   神绮站 · 科普小课堂（视频页）
+   布局：视频上下排列（单列），播放器尽量大
+   交互：封面 + 大播放键 → 点击在卡片内播放（不跳转 B 站）
+   ========================================================= */
+
+.vid-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+  max-width: 1120px;
+  margin: 30px auto 0;
+}
+
+.vid {
+  border: 1px solid var(--glass-bd, rgba(242, 190, 212, .18));
+  border-radius: 18px;
+  background: var(--glass, rgba(42, 18, 34, .55));
+  overflow: hidden;
+}
+
+.vid__head { padding: 17px 20px 12px; }
+.vid__title {
+  margin: 0;
+  font-family: var(--font-serif, serif);
+  font-size: clamp(1.05rem, 2.4vw, 1.32rem);
+  line-height: 1.6;
+  color: var(--snow, #fdf4f7);
+  word-break: break-word;
+}
+.vid__meta {
+  margin: 6px 0 0;
+  font-size: .84rem;
+  line-height: 1.7;
+  color: var(--ink-faint, #9d7f8f);
+}
+
+/* ---------- 播放区 ---------- */
+.vid__stage {
+  position: relative;
+  width: 100%;
+  height: 560px;                 /* 老浏览器兜底 */
+  background: #000;
+}
+@supports (aspect-ratio: 16 / 9) {
+  .vid__stage {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* 封面（有图就显示，没图就是渐变底） */
+.vid__poster {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background:
+    radial-gradient(120% 120% at 18% 0%, rgba(226, 96, 138, .34), transparent 62%),
+    radial-gradient(120% 120% at 92% 100%, rgba(208, 106, 145, .34), transparent 64%),
+    linear-gradient(150deg, #2a1020, #14060e);
+  color: #fff;
+}
+.vid__poster:focus-visible { outline: 2px solid var(--ice, #e67ba8); outline-offset: -3px; }
+.vid__cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.vid__poster::after {           /* 压暗一点，让播放键更清楚 */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 2, 5, .12), rgba(10, 2, 5, .42));
+  pointer-events: none;
+}
+
+/* 大播放键 */
+.vid__play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 22px 12px 16px;
+  border-radius: 999px;
+  background: rgba(12, 3, 9, .62);
+  border: 1.5px solid rgba(255, 222, 236, .55);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .5);
+  transition: transform .2s ease, background .2s ease;
+}
+.vid__play i {
+  display: block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 13px 0 13px 21px;
+  border-color: transparent transparent transparent #fff;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, .6));
+}
+.vid__play b {
+  font-size: .95rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, .7);
+}
+.vid__poster:hover .vid__play {
+  transform: translate(-50%, -50%) scale(1.06);
+  background: rgba(226, 96, 138, .5);
+}
+
+/* 播放器（点击后才创建） */
+.vid__frame {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #000;
+}
+.vid.is-playing .vid__poster { display: none; }
+
+/* ---------- 底部 ---------- */
+.vid__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 20px 16px;
+}
+.vid__note {
+  margin: 0;
+  font-size: .82rem;
+  color: var(--ink-faint, #9d7f8f);
+}
+.vid__link { font-size: .84rem; }
+
+/* ---------- 空状态 / 载入 / 出错 ---------- */
+.vid-empty,
+.vid-loading,
+.vid-error {
+  margin: 0 auto;
+  padding: 28px 24px;
+  border-radius: 16px;
+  border: 1px dashed rgba(242, 190, 212, .24);
+  background: rgba(24, 8, 16, .45);
+  color: var(--ink-dim, #cbb0bd);
+  font-size: .92rem;
+  line-height: 2;
+  text-align: center;
+  max-width: 860px;
+}
+.vid-error {
+  border-style: solid;
+  border-color: rgba(255, 170, 120, .5);
+  background: rgba(48, 18, 8, .6);
+  color: #ffe0c8;
+  text-align: left;
+}
+.vid-empty h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-serif, serif);
+  font-size: 1.2rem;
+  color: var(--snow, #fdf4f7);
+}
+.vid-empty__code {
+  display: block;
+  margin: 14px auto 0;
+  max-width: 520px;
+  padding: 13px 15px;
+  border-radius: 12px;
+  text-align: left;
+  overflow-x: auto;
+  font-size: .82rem;
+  line-height: 1.9;
+  color: #ffe3ef;
+  background: rgba(12, 3, 9, .72);
+  border: 1px solid rgba(242, 190, 212, .2);
+}
+.vid-empty code,
+.vid-error code {
+  padding: .1em .45em;
+  border-radius: 5px;
+  background: rgba(226, 96, 138, .16);
+  border: 1px solid rgba(242, 190, 212, .24);
+  color: var(--ice-soft, #f2c2cf);
+}
+
+@media (max-width: 900px) {
+  .vid-grid { gap: 22px; margin-top: 22px; }
+  .vid__stage { height: 420px; }
+}
+@media (max-width: 640px) {
+  .vid__stage { height: 260px; }
+  .vid__head { padding: 14px 15px 10px; }
+  .vid__foot { padding: 11px 15px 14px; }
+  .vid__play { padding: 10px 16px 10px 13px; gap: 9px; }
+  .vid__play i { border-width: 11px 0 11px 17px; }
+  .vid__play b { font-size: .86rem; }
+}

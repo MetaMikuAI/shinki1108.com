@@ -1,0 +1,40 @@
+{
+  "collections": [
+    {
+      "id": "yonkoma",
+      "title": "四格神绮",
+      "type": "reader",
+      "desc": "魔界之神的日常四格 —— 一页一页往下翻，翻页用 ← →。",
+      "count": 49,
+      "cover": "cover.webp",
+      "coverFit": "cover"
+    },
+    {
+      "id": "mengmeng",
+      "title": "萌萌神绮",
+      "type": "grid",
+      "desc": "萌萌的神绮大人，收图自取；点击看大图。",
+      "count": 10,
+      "cover": "001.webp",
+      "coverFit": "top"
+    },
+    {
+      "id": "feifei1",
+      "title": "肥肥神绮 ①",
+      "type": "grid",
+      "desc": "圆滚滚的肥肥神绮，第一弹。",
+      "count": 9,
+      "cover": "001.avif",
+      "coverFit": "top"
+    },
+    {
+      "id": "feifei2",
+      "title": "肥肥神绮 ②",
+      "type": "grid",
+      "desc": "圆滚滚的肥肥神绮，第二弹。",
+      "count": 9,
+      "cover": "001.avif",
+      "coverFit": "top"
+    }
+  ]
+}

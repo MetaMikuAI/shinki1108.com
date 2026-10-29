@@ -1,0 +1,550 @@
+{
+  "formatVersion": 3,
+  "characterId": "shinki",
+  "baseSize": 360,
+  "note": "架构照 dsh-dafeiyu：clip = 帧序列 + frameMs/loop/motion。素材名即语义（姿势-表情），映射见下。将来画图插件生成的多帧表情直接往 frames 里加。",
+  "poses": {
+    "tea": {
+      "label": "喝茶",
+      "exprs": [
+        "cry",
+        "happy",
+        "speechless",
+        "dizzy",
+        "angry"
+      ]
+    },
+    "think": {
+      "label": "思考",
+      "exprs": [
+        "cry",
+        "happy",
+        "surprise",
+        "speechless",
+        "angry"
+      ]
+    },
+    "stand": {
+      "label": "站立",
+      "exprs": [
+        "happy",
+        "surprise",
+        "speechless",
+        "dizzy",
+        "puzzle"
+      ]
+    },
+    "lie": {
+      "label": "趴趴",
+      "exprs": [
+        "happy",
+        "surprise",
+        "speechless",
+        "dizzy",
+        "puzzle"
+      ],
+      "note": "趴趴：开心=睡觉，疑惑=翻身，无语=嘟囔，惊讶=惊醒，晕晕=滚来滚去"
+    }
+  },
+  "clips": {
+    "idle": {
+      "frames": [
+        {
+          "src": "stand-speechless.webp"
+        }
+      ],
+      "loop": true,
+      "motion": "breathe"
+    },
+    "walk": {
+      "frames": [
+        {
+          "src": "stand-speechless.webp"
+        }
+      ],
+      "loop": true,
+      "motion": "walk"
+    },
+    "glance": {
+      "frames": [
+        {
+          "src": "stand-puzzle.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 2200,
+      "note": "待机·疑惑地瞥一眼，停 2.2 秒"
+    },
+    "smile": {
+      "frames": [
+        {
+          "src": "stand-happy.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 2800,
+      "motion": "breathe",
+      "note": "待机·微笑，停 2.8 秒"
+    },
+    "sip": {
+      "frames": [
+        {
+          "src": "tea-happy.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 1400
+    },
+    "ponder": {
+      "frames": [
+        {
+          "src": "think-speechless.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 1200,
+      "next": "think_out"
+    },
+    "happy": {
+      "frames": [
+        {
+          "src": "stand-happy.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 1100,
+      "motion": "bounce"
+    },
+    "surprise": {
+      "frames": [
+        {
+          "src": "stand-surprise.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 800,
+      "motion": "bounce"
+    },
+    "puzzle": {
+      "frames": [
+        {
+          "src": "stand-puzzle.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 900
+    },
+    "angry": {
+      "frames": [
+        {
+          "src": "think-angry.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 1300,
+      "motion": "shake",
+      "next": "angry_out"
+    },
+    "cry": {
+      "frames": [
+        {
+          "src": "think-cry.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 1500,
+      "motion": "tremble"
+    },
+    "dizzy": {
+      "frames": [
+        {
+          "src": "stand-dizzy.webp"
+        }
+      ],
+      "loop": true,
+      "motion": "dizzy"
+    },
+    "dragging": {
+      "frames": [
+        {
+          "src": "stand-surprise.webp"
+        }
+      ],
+      "loop": true
+    },
+    "drop": {
+      "frames": [
+        {
+          "src": "lie-surprise.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 800,
+      "motion": "bounce"
+    },
+    "head_pat": {
+      "frames": [
+        {
+          "src": "lie-happy.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 1500,
+      "motion": "pat"
+    },
+    "sleep": {
+      "frames": [
+        {
+          "src": "lie-happy.webp"
+        }
+      ],
+      "loop": true,
+      "motion": "breathe",
+      "note": "睡觉：趴趴·开心（嘴角上扬地睡）"
+    },
+    "wakeup": {
+      "frames": [
+        {
+          "src": "stand-surprise.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 900,
+      "motion": "bounce"
+    },
+    "tea_rest": {
+      "frames": [
+        {
+          "src": "tea-happy.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 1500,
+      "motion": "breathe",
+      "next": "tea_out"
+    },
+    "tea_in": {
+      "frames": [
+        {
+          "src": "clip_tea_1.webp"
+        },
+        {
+          "src": "clip_tea_2.webp"
+        },
+        {
+          "src": "clip_tea_3.webp"
+        },
+        {
+          "src": "clip_tea_4.webp"
+        }
+      ],
+      "frameMs": 150,
+      "loop": false,
+      "holdMs": 500,
+      "next": "tea_rest",
+      "note": "站立→喝茶 的过渡动作帧（画图工具生成的 33%/66% 中间帧 + 两端合成）"
+    },
+    "tea_out": {
+      "frames": [
+        {
+          "src": "clip_tea_1.webp"
+        },
+        {
+          "src": "clip_tea_2.webp"
+        },
+        {
+          "src": "clip_tea_3.webp"
+        },
+        {
+          "src": "clip_tea_4.webp"
+        }
+      ],
+      "frameMs": 130,
+      "loop": false,
+      "reverse": true,
+      "holdMs": 400,
+      "next": "idle",
+      "note": "喝完放下：同一组帧倒放"
+    },
+    "lie_down": {
+      "frames": [
+        {
+          "src": "clip_lie_down_1.webp"
+        },
+        {
+          "src": "clip_lie_down_2.webp"
+        },
+        {
+          "src": "clip_lie_down_3.webp"
+        },
+        {
+          "src": "clip_lie_down_4.webp"
+        },
+        {
+          "src": "clip_lie_down_5.webp"
+        }
+      ],
+      "frameMs": 130,
+      "loop": false,
+      "holdMs": 700,
+      "next": "sleep",
+      "note": "站立→趴趴 的过渡动作帧（画图工具生成中间帧后合成，共用画布+按进度插值缩放）"
+    },
+    "stand_up": {
+      "frames": [
+        {
+          "src": "clip_lie_down_1.webp"
+        },
+        {
+          "src": "clip_lie_down_2.webp"
+        },
+        {
+          "src": "clip_lie_down_3.webp"
+        },
+        {
+          "src": "clip_lie_down_4.webp"
+        },
+        {
+          "src": "clip_lie_down_5.webp"
+        }
+      ],
+      "frameMs": 110,
+      "loop": false,
+      "reverse": true,
+      "holdMs": 500,
+      "next": "idle",
+      "note": "趴趴→站立：把同一组过渡帧倒放，不必重新生成"
+    },
+    "think_in": {
+      "frames": [
+        {
+          "src": "clip_think_1.webp"
+        },
+        {
+          "src": "clip_think_2.webp"
+        },
+        {
+          "src": "clip_think_3.webp"
+        },
+        {
+          "src": "clip_think_4.webp"
+        }
+      ],
+      "frameMs": 150,
+      "loop": false,
+      "holdMs": 400,
+      "next": "ponder",
+      "note": "站立→思考 过渡（画图工具生成 33/66 中间帧）"
+    },
+    "think_out": {
+      "frames": [
+        {
+          "src": "clip_think_1.webp"
+        },
+        {
+          "src": "clip_think_2.webp"
+        },
+        {
+          "src": "clip_think_3.webp"
+        },
+        {
+          "src": "clip_think_4.webp"
+        }
+      ],
+      "frameMs": 130,
+      "loop": false,
+      "reverse": true,
+      "holdMs": 300,
+      "next": "idle",
+      "note": "思考→站立（倒放）"
+    },
+    "angry_in": {
+      "frames": [
+        {
+          "src": "clip_angry_1.webp"
+        },
+        {
+          "src": "clip_angry_2.webp"
+        },
+        {
+          "src": "clip_angry_3.webp"
+        },
+        {
+          "src": "clip_angry_4.webp"
+        }
+      ],
+      "frameMs": 140,
+      "loop": false,
+      "holdMs": 300,
+      "next": "angry",
+      "note": "站立→生气 过渡"
+    },
+    "angry_out": {
+      "frames": [
+        {
+          "src": "clip_angry_1.webp"
+        },
+        {
+          "src": "clip_angry_2.webp"
+        },
+        {
+          "src": "clip_angry_3.webp"
+        },
+        {
+          "src": "clip_angry_4.webp"
+        }
+      ],
+      "frameMs": 120,
+      "loop": false,
+      "reverse": true,
+      "holdMs": 300,
+      "next": "idle",
+      "note": "生气→站立（倒放）"
+    },
+    "sleep_roll": {
+      "frames": [
+        {
+          "src": "lie-puzzle.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 1100,
+      "motion": "pat",
+      "note": "睡着的微动作：翻个身 / 迷糊一下"
+    },
+    "sleep_fuss": {
+      "frames": [
+        {
+          "src": "lie-speechless.webp"
+        }
+      ],
+      "loop": false,
+      "holdMs": 900,
+      "note": "睡着的微动作：嘟囔一句（原睡姿那张挪到这里）"
+    },
+    "idle_surprise": {
+      "loop": false,
+      "holdMs": 1900,
+      "motion": "",
+      "frames": [
+        {
+          "src": "stand-surprise.webp"
+        }
+      ],
+      "note": "待机·惊讶：突然一愣，停 1.9 秒"
+    },
+    "idle_dizzy": {
+      "loop": false,
+      "holdMs": 2400,
+      "motion": "breathe",
+      "frames": [
+        {
+          "src": "stand-dizzy.webp"
+        }
+      ],
+      "note": "待机·晕晕：转晕了，停 2.4 秒"
+    },
+    "idle_puzzle": {
+      "loop": false,
+      "holdMs": 2600,
+      "motion": "",
+      "frames": [
+        {
+          "src": "stand-puzzle.webp"
+        }
+      ],
+      "note": "待机·疑惑：歪头不解，停 2.6 秒"
+    },
+    "idle_happy": {
+      "loop": false,
+      "holdMs": 3000,
+      "motion": "breathe",
+      "frames": [
+        {
+          "src": "stand-happy.webp"
+        }
+      ],
+      "note": "待机·开心：笑眯眯地站一会儿，停 3 秒"
+    }
+  },
+  "idleMicroClips": [
+    "glance",
+    "smile",
+    "idle_puzzle",
+    "idle_happy",
+    "idle_surprise",
+    "idle_dizzy",
+    "tea_in",
+    "think_in"
+  ],
+  "config": {
+    "size": 156,
+    "speed": 42,
+    "idleToSleep": 30000,
+    "microEveryMs": 6200,
+    "microChance": 0.75,
+    "activityLevel": "normal",
+    "bubbleMode": "events",
+    "reducedMotion": false,
+    "sleepToWake": 25000,
+    "sleepMicroEveryMs": 6500,
+    "sleepMicroChance": 0.5,
+    "idleChangeMax": 7000
+  },
+  "lines": {
+    "poke": [
+      "别戳啦，会痒的。",
+      "……有什么事吗？",
+      "黑绮士 669，报到。",
+      "魔界可是很宽广的哦。"
+    ],
+    "head_pat": [
+      "唔……摸头可不是对神明的礼节。",
+      "……就一下哦。",
+      "你倒是胆子不小。"
+    ],
+    "happy": [
+      "要不要来魔界看看？",
+      "呵，算你有眼光。"
+    ],
+    "angry": [
+      "巫女什么的，不过是神的狗而已！",
+      "够了，再戳就送你下地狱。"
+    ],
+    "cry": [
+      "呜……太过分了。",
+      "我、我可是魔界之神哦……"
+    ],
+    "drop": [
+      "哇——！",
+      "放我下来！"
+    ],
+    "dizzy": [
+      "头……好晕……",
+      "转太快了啦……"
+    ],
+    "sleep": [
+      "zzZ……",
+      "……魔界，也要睡了……"
+    ],
+    "wakeup": [
+      "唔……谁呀？",
+      "……我睡着了吗？"
+    ],
+    "walk": [
+      "去魔界散散步。",
+      "11.8 —— 记住这个日子。"
+    ],
+    "sip": [
+      "……要来一杯吗？"
+    ],
+    "think": [
+      "唔……让我想想。"
+    ],
+    "dream": [
+      "唔……梦到魔界了……",
+      "……别吵，再睡一会儿。",
+      "zzZ……（翻了个身）"
+    ]
+  }
+}

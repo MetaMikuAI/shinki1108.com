@@ -1,0 +1,301 @@
+/* =========================================================
+   四格与表情包 · 页面样式（神绮站配色：玫红 / 紫罗兰 / 金）
+   结构照搬蕾蒂之家的阅读器：目录 → 阅读器 / 网格
+   ========================================================= */
+.mg-body { overflow-x: hidden; }
+
+.mg-view {
+  position: relative;
+  z-index: 2;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 104px 20px 60px;
+}
+
+/* ---------------- 目录头部 ---------------- */
+.mg-hero { text-align: center; margin-bottom: 34px; }
+.mg-kicker {
+  font-family: var(--font-hand-en, inherit);
+  font-size: .78rem;
+  letter-spacing: .38em;
+  color: var(--pink, #e2608a);
+  opacity: .85;
+  margin: 0 0 10px;
+}
+.mg-title {
+  font-size: clamp(1.9rem, 5vw, 2.8rem);
+  margin: 0 0 14px;
+  letter-spacing: .06em;
+  color: var(--snow, #fff);
+  text-shadow: 0 6px 30px rgba(226, 96, 138, .45);
+}
+.mg-hero__divider { color: var(--pink, #e2608a); opacity: .8; margin: 0 0 14px; }
+.mg-hero__divider svg { width: 120px; height: 20px; }
+.mg-lead {
+  max-width: 620px;
+  margin: 0 auto;
+  font-size: .92rem;
+  line-height: 1.9;
+  color: var(--ink-dim, #c9b6c2);
+}
+
+/* ---------------- 分区标题 ---------------- */
+.mg-section { margin-bottom: 36px; }
+.mg-section__title {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 1.06rem; letter-spacing: .14em;
+  color: var(--snow, #fff);
+  margin: 0 0 18px;
+}
+.mg-section__title::after {
+  content: ''; flex: 1 1 auto; height: 1px;
+  background: linear-gradient(90deg, rgba(226, 96, 138, .5), transparent);
+}
+
+/* ---------------- 合集卡片 ---------------- */
+.mg-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+.mg-list--packs { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+
+.mg-card {
+  display: flex; flex-direction: column;
+  text-decoration: none; color: inherit;
+  border-radius: 16px; overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(242, 190, 212, .22);
+  background: linear-gradient(180deg, rgba(48, 16, 32, .72), rgba(24, 8, 18, .86));
+  transition: transform .24s ease, border-color .24s ease, box-shadow .24s ease;
+}
+.mg-card:hover, .mg-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(242, 190, 212, .5);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .45), 0 0 0 1px rgba(226, 96, 138, .25) inset;
+}
+.mg-card__cover {
+  position: relative; aspect-ratio: 4 / 3; overflow: hidden;
+  background: rgba(255, 255, 255, .04);
+  display: flex; align-items: center; justify-content: center;
+}
+.mg-card__cover img {
+  width: 100%; height: 100%; object-fit: cover; object-position: top center;
+  opacity: 0; transition: opacity .45s ease, transform .35s ease;
+}
+.mg-card__cover img.in { opacity: 1; }
+.mg-card:hover .mg-card__cover img { transform: scale(1.05); }
+.mg-card__cover--tall img { object-fit: contain; object-position: center; padding: 10px; }
+.mg-card__badge {
+  position: absolute; right: 10px; top: 10px;
+  padding: 3px 10px; border-radius: 999px;
+  font-size: .72rem; letter-spacing: .1em;
+  color: #ffd9e7; background: rgba(226, 96, 138, .32);
+  border: 1px solid rgba(242, 190, 212, .45);
+  backdrop-filter: blur(4px);
+}
+.mg-card__meta { padding: 13px 14px 15px; }
+.mg-card__title { font-size: 1rem; letter-spacing: .05em; margin: 0 0 6px; color: #fff; }
+.mg-card__desc { font-size: .8rem; line-height: 1.75; color: var(--ink-dim, #c9b6c2); margin: 0; }
+
+.mg-empty, .mg-tip {
+  grid-column: 1 / -1;
+  padding: 18px 20px; border-radius: 14px;
+  border: 1px dashed rgba(242, 190, 212, .28);
+  background: rgba(255, 255, 255, .03);
+  color: var(--ink-dim, #c9b6c2);
+  font-size: .86rem; line-height: 1.9; text-align: center;
+}
+.mg-tip { margin-top: 26px; }
+
+/* ---------------- 阅读器顶栏 ---------------- */
+.mg-bar {
+  position: fixed; left: 0; right: 0; top: 0; z-index: 60;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-top, 0px));
+  padding-top: calc(10px + env(safe-area-inset-top, 0px));
+  background: rgba(18, 6, 14, .82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(242, 190, 212, .16);
+}
+.mg-back {
+  flex: 0 0 auto;
+  padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  font: inherit; font-size: .86rem;
+  color: #ffd9e7; background: rgba(226, 96, 138, .18);
+  border: 1px solid rgba(242, 190, 212, .35);
+  transition: background .2s ease, color .2s ease;
+}
+.mg-back:hover { background: rgba(226, 96, 138, .34); color: #fff; }
+.mg-bar__title {
+  flex: 1 1 auto; min-width: 0;
+  font-size: .95rem; color: #fff; letter-spacing: .06em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mg-bar__count { flex: 0 0 auto; font-size: .8rem; color: var(--ink-dim, #c9b6c2); }
+.mg-progress {
+  position: fixed; left: 0; right: 0; top: 0; z-index: 61;
+  height: 2px; background: rgba(255, 255, 255, .08);
+}
+.mg-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #e2608a, #c9a6ff); transition: width .15s linear; }
+#mgReaderView, #mgPackView { padding-top: 76px; }
+/* 阅读器：跟随整页滚动（不给独立滚动区）——四格很长，整页往下翻最自然 */
+#mgReaderView[hidden] { display: none; }
+/* 阅读时把站点顶栏藏起来：它和阅读器顶栏都是 fixed，叠在一起会打架 */
+.mg-body.is-reading .site-header { display: none; }
+.mg-body.is-reading .mg-view { padding-top: 72px; }
+
+/* ---------------- 阅读器：向左翻页制 ---------------- */
+.mg-stage {
+  position: relative;
+  width: min(820px, 100%);
+  margin: 0 auto;
+  border-radius: 14px;
+  overflow: hidden;                  /* 只用来裁圆角，不滚动 */
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid rgba(242, 190, 212, .16);
+}
+.mg-stage img {
+  display: block;
+  width: 100%; height: auto;         /* 长图自然撑高 → 舞台内可上下滚 */
+  background: rgba(0, 0, 0, .18);
+}
+/* 翻页动画：下一页从右侧滑入（向左翻），上一页从左侧滑入 */
+.mg-stage img.slide-l { animation: mgSlideL .34s cubic-bezier(.22, 1, .3, 1); }
+.mg-stage img.slide-r { animation: mgSlideR .34s cubic-bezier(.22, 1, .3, 1); }
+.mg-stage img.bump { animation: mgBump .3s ease; }
+@keyframes mgSlideL { from { transform: translateX(9%); opacity: .35; } to { transform: none; opacity: 1; } }
+@keyframes mgSlideR { from { transform: translateX(-9%); opacity: .35; } to { transform: none; opacity: 1; } }
+@keyframes mgBump { 0%,100% { transform: none; } 30% { transform: translateX(-2%); } 60% { transform: translateX(1.5%); } }
+
+.mg-page__ph {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .82rem; letter-spacing: .2em; color: var(--ink-faint, #8d7a86);
+  background: linear-gradient(100deg, rgba(255,255,255,.02) 30%, rgba(255,255,255,.07) 50%, rgba(255,255,255,.02) 70%);
+  background-size: 220% 100%;
+  animation: mgShine 1.6s linear infinite;
+}
+.mg-page__ph[hidden] { display: none; }
+@keyframes mgShine { from { background-position: 120% 0; } to { background-position: -20% 0; } }
+
+
+.mg-navbtns--sub { margin-top: 10px; }
+.mg-navbtns--sub .btn { font-size: .8rem; padding: .45em 1.05em; }
+
+.mg-footer { margin-top: 30px; text-align: center; }
+.mg-navbtns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.mg-hint { margin: 14px 0 0; font-size: .8rem; color: var(--ink-faint, #8d7a86); letter-spacing: .06em; }
+.mg-hint--center { text-align: center; }
+
+/* ---------------- 表情包网格 ---------------- */
+.mg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: 12px;
+}
+.mg-sticker {
+  position: relative; padding: 0; cursor: zoom-in;
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(242, 190, 212, .18);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
+  aspect-ratio: 1 / 1;
+  transition: transform .2s ease, border-color .2s ease;
+}
+.mg-sticker:hover { transform: translateY(-3px); border-color: rgba(242, 190, 212, .5); }
+.mg-sticker img { width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .35s ease; }
+.mg-sticker img.in { opacity: 1; }
+
+/* ---------------- 大图 ---------------- */
+.mg-light {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  background: rgba(8, 2, 6, .9);
+  backdrop-filter: blur(4px);
+  animation: mgFade .2s ease;
+}
+.mg-light[hidden] { display: none; }
+@keyframes mgFade { from { opacity: 0; } to { opacity: 1; } }
+.mg-light img {
+  max-width: min(560px, 84vw); max-height: 82vh;
+  width: auto; height: auto;
+  filter: drop-shadow(0 24px 50px rgba(0, 0, 0, .6));
+  animation: mgPop .28s cubic-bezier(.2, 1.4, .4, 1);
+}
+@keyframes mgPop { from { transform: scale(.9); opacity: 0; } to { transform: none; opacity: 1; } }
+.mg-light__close {
+  position: absolute; right: 14px; top: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 0; cursor: pointer; font-size: 22px; line-height: 1;
+  color: #fff; background: rgba(255, 255, 255, .12);
+}
+.mg-light__close:hover { background: rgba(255, 255, 255, .24); }
+.mg-light__arrow {
+  position: absolute; top: 50%; margin-top: -26px;
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 0; cursor: pointer; font-size: 30px; line-height: 1;
+  color: #fff; background: rgba(255, 255, 255, .1);
+}
+.mg-light__arrow:hover { background: rgba(255, 255, 255, .22); }
+.mg-light__arrow--l { left: 14px; }
+.mg-light__arrow--r { right: 14px; }
+.mg-light__count {
+  position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
+  font-size: .82rem; color: var(--ink-dim, #c9b6c2); letter-spacing: .1em;
+}
+
+/* ---------------- 手机端 ---------------- */
+@media (max-width: 720px) {
+  .mg-view { padding: 92px 14px 48px; }
+  #mgReaderView, #mgPackView { padding-top: 62px; }
+  .mg-body.is-reading .mg-view { padding-top: 64px; }
+  .mg-list { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+  .mg-list--packs { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; }
+  .mg-grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; }
+  .mg-card__meta { padding: 11px 12px 13px; }
+  .mg-card__title { font-size: .94rem; }
+  .mg-card__desc { font-size: .76rem; }
+  .mg-lead { font-size: .86rem; }
+  /* 顶栏：更紧凑、点按区域够大、避开刘海与圆角 */
+  .mg-bar {
+    padding: 6px 10px calc(6px + env(safe-area-inset-top, 0px));
+    gap: 8px;
+    min-height: 44px;
+  }
+  .mg-back {
+    padding: 9px 13px;
+    font-size: .82rem;
+    min-height: 38px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .mg-bar__title { font-size: .84rem; letter-spacing: .02em; }
+  .mg-bar__count { font-size: .74rem; letter-spacing: .02em; }
+  /* 内容让开顶栏（含刘海高度） */
+  #mgReaderView, #mgPackView { padding-top: calc(58px + env(safe-area-inset-top, 0px)); }
+  /* 表情包宫格：手机上多排一列，格子缩小更好点 */
+  .mg-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+  .mg-light { padding: 12px; }
+  .mg-light img { max-width: 92vw; max-height: 74vh; }
+  .mg-light__arrow { width: 42px; height: 42px; margin-top: -21px; font-size: 24px; background: rgba(255, 255, 255, .14); }
+  .mg-light__arrow--l { left: 8px; }
+  .mg-light__arrow--r { right: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mg-page__ph { animation: none; }
+  .mg-card, .mg-sticker, .mg-light img { transition: none; animation: none; }
+}
+/* 卡片入场动画：自带的，不依赖全站的 .reveal（那是加载时抓一次，抓不到脚本后插入的卡片） */
+@keyframes mgCardIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.mg-card, .mg-section__title, .mg-tip { animation: mgCardIn .5s ease both; }
+.mg-list .mg-card:nth-child(1) { animation-delay: .02s; }
+.mg-list .mg-card:nth-child(2) { animation-delay: .08s; }
+.mg-list .mg-card:nth-child(3) { animation-delay: .14s; }
+.mg-list .mg-card:nth-child(4) { animation-delay: .2s; }
+@media (prefers-reduced-motion: reduce) {
+  .mg-card, .mg-section__title, .mg-tip { animation: none; }
+}

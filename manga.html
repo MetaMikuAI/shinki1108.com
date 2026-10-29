@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>四格与表情包 — 神绮 · Shinki</title>
+  <meta name="description" content="神绮（Shinki）同人四格漫画与表情包合集：魔界之神的日常四格、萌萌神绮、肥肥神绮，点开就能看。">
+  <link rel="icon" href="assets/img/favicon.png" type="image/png">
+  <noscript></noscript>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/shinki.css">
+  <link rel="stylesheet" href="assets/css/pet.css">
+  <link rel="stylesheet" href="assets/css/manga.css">
+</head>
+<body class="mg-body">
+  <a class="skip-link" href="#mgListView">跳到主要内容</a>
+
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="shinki-wings" viewBox="0 0 512 436">
+      <image href="assets/img/shinki-wings.webp" x="0" y="0" width="512" height="436" preserveAspectRatio="xMidYMid meet"/>
+    </symbol>
+  </svg>
+
+  <div id="bgStars" aria-hidden="true"></div>
+
+
+
+
+  <header class="site-header" id="siteHeader">
+    <div class="site-header__inner">
+      <a class="brand" href="index.html" aria-label="回到首页">
+        <svg class="brand__mascot" viewBox="0 0 512 436" aria-hidden="true"><use href="#shinki-wings"/></svg>
+        <span>神绮 · Shinki</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="展开导航" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-links" id="navLinks" aria-label="主导航">
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="gallery.html" class="nav-link">画廊</a>
+        <a href="videos.html" class="nav-link">科普</a>
+        <a href="relay.html" class="nav-link">接力作品</a>
+        <a href="manga.html" class="nav-link is-active">四格与表情包</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="mg-view" id="mgListView">
+    <header class="mg-hero reveal">
+      <p class="mg-kicker">4-KOMA &amp; STICKERS</p>
+      <h1 class="mg-title">四格与表情包</h1>
+      <div class="mg-hero__divider" aria-hidden="true">
+        <svg viewBox="0 0 140 24"><path d="M2 12h46M92 12h46" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".55"/><path d="M70 3.5l5 8.5-5 8.5-5-8.5z" fill="currentColor" opacity=".9"/></svg>
+      </div>
+      <p class="mg-lead">魔界之神的日常四格，圆滚滚的表情包 —— 点开就能看，翻页用 ← → 或直接往下滑。</p>
+    </header>
+
+    <section class="mg-section">
+      <h2 class="mg-section__title">四格漫画</h2>
+      <div class="mg-list" id="mgListReader">
+        <p class="mg-empty">载入中…</p>
+      </div>
+    </section>
+
+    <section class="mg-section">
+      <h2 class="mg-section__title">表情包</h2>
+      <div class="mg-list mg-list--packs" id="mgListPacks">
+        <p class="mg-empty">载入中…</p>
+      </div>
+    </section>
+
+    <p class="mg-tip">
+      <small>同人二创展示，请勿用于商业用途；表情包长按或右键即可保存。</small>
+    </p>
+  </main>
+
+  <main class="mg-view" id="mgReaderView" hidden>
+    <div class="mg-bar" id="mgBar">
+      <button type="button" class="mg-back" id="mgBack" aria-label="返回合集列表">← 目录</button>
+      <span class="mg-bar__title" id="mgBarTitle"></span>
+      <span class="mg-bar__count" id="mgCount"></span>
+    </div>
+    <div class="mg-progress"><i id="mgProgress"></i></div>
+    <div class="mg-stage" id="mgPages">
+      <img id="mgPageImg" alt="">
+      <span class="mg-page__ph" id="mgPagePh">载入中…</span>
+    </div>
+    <div class="mg-footer" id="mgFooter">
+      <div class="mg-navbtns">
+        <button type="button" class="btn btn--primary btn--sm" id="mgPrevPage">← 上一页</button>
+        <button type="button" class="btn btn--primary btn--sm" id="mgNextPage">下一页 →</button>
+      </div>
+      <div class="mg-navbtns mg-navbtns--sub">
+        <button type="button" class="btn btn--ghost btn--sm" id="mgJump">跳到第…话</button>
+      </div>
+      <p class="mg-hint">← → 左右翻页 · 页内上下滚动 · Esc 回目录</p>
+    </div>
+  </main>
+
+  <main class="mg-view" id="mgPackView" hidden>
+    <div class="mg-bar" id="mgPackBar">
+      <button type="button" class="mg-back" id="mgPackBack" aria-label="返回合集列表">← 目录</button>
+      <span class="mg-bar__title" id="mgPackTitle"></span>
+      <span class="mg-bar__count" id="mgPackCount"></span>
+    </div>
+    <div class="mg-grid" id="mgGrid"></div>
+    <p class="mg-hint mg-hint--center">点任意一张看大图 · ← → 切换 · Esc 关闭</p>
+  </main>
+
+  <div class="mg-light" id="mgLight" hidden>
+    <button type="button" class="mg-light__close" id="mgLightClose" aria-label="关闭">×</button>
+    <button type="button" class="mg-light__arrow mg-light__arrow--l" id="mgLightPrev" aria-label="上一张">‹</button>
+    <img id="mgLightImg" alt="">
+    <button type="button" class="mg-light__arrow mg-light__arrow--r" id="mgLightNext" aria-label="下一张">›</button>
+    <span class="mg-light__count" id="mgLightCount"></span>
+  </div>
+
+  <footer class="site-footer" id="footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__mascot" aria-hidden="true">
+        <svg viewBox="0 0 512 436"><use href="#shinki-wings"/></svg>
+      </div>
+      <p class="site-footer__note">
+        本页四格与表情包为非商业性同人二创展示，角色「神绮」出自《东方怪绮谈 ～ Mystic Square》。<br>
+        「东方Project」及相关角色版权归 <strong>ZUN（上海爱丽丝幻乐团）</strong> 所有。
+      </p>
+
+      <p class="site-footer__copy">Made with 🖤 献给魔界之神 — <span id="year">2026</span> · <a class="text-link" href="index.html">返回首页</a></p>
+    </div>
+  </footer>
+
+  <script defer src="assets/js/main.js"></script>
+  <script defer src="assets/js/manga.js"></script>
+  <script defer src="assets/js/pet.js"></script>
+  <script defer src="assets/js/pet-boot.js"></script>
+</body>
+</html>

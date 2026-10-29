@@ -1,0 +1,185 @@
+/* =========================================================
+   神绮桌宠 · 样式 v2
+   结构：.pet > [.pet__bubble, .pet__shadow, .pet__flip > img.pet__sprite]
+   动作语义（对应 manifest 的 motion 字段）：
+     breathe 呼吸 / walk 走路颠 / bounce 开心跳 / shake 生气抖 / dizzy 晕 / pat 被摸头
+   ========================================================= */
+.pet {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: var(--pet-size, 156px);
+  z-index: 40;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;          /* 手机上长按不弹系统菜单 */
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  --pet-safe-bottom: env(safe-area-inset-bottom, 0px);   /* 供 JS 读取安全区高度 */
+}
+.pet.is-dragging { cursor: grabbing; }
+
+/* 出场：轻轻落下 + 淡入（第一次出现在页面时） */
+.pet.is-entering .pet__sprite {
+  animation: petDropIn .46s cubic-bezier(.22, 1.1, .36, 1) 1, petBreathe 3.6s ease-in-out .5s infinite;
+}
+@keyframes petDropIn {
+  0%   { transform: translateY(-26%) scale(.94, 1.06); opacity: 0; }
+  60%  { transform: translateY(2%) scale(1.03, .97); opacity: 1; }
+  100% { transform: translateY(0) scale(1, 1); opacity: 1; }
+}
+
+/* 翻转层：只负责左右朝向，避免和动作动画抢 transform */
+.pet__flip {
+  display: block;
+  height: var(--pet-size, 156px);
+  transform-origin: 50% 90%;
+}
+.pet__sprite {
+  display: block;
+  height: var(--pet-size, 156px);
+  width: auto;
+  pointer-events: none;
+  transform-origin: 50% 92%;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, .45));
+  animation: petBreathe 3.6s ease-in-out infinite;
+}
+
+/* ---------- 动作语义 ---------- */
+.pet__sprite.motion-breathe { animation: petBreathe 3.6s ease-in-out infinite; }
+.pet__sprite.motion-walk    { animation: petWalkCycle .74s linear infinite; }
+.pet.is-walking .pet__shadow { animation: petWalkShadow .37s ease-in-out infinite; }
+.pet__sprite.motion-bounce  { animation: petBounce .5s cubic-bezier(.3, 1.6, .5, 1) 2; }
+.pet__sprite.motion-shake   { animation: petShake .34s ease-in-out 3; }
+.pet__sprite.motion-dizzy   { animation: petDizzy 2.2s ease-in-out infinite; }
+.pet__sprite.motion-pat     { animation: petPat .8s ease-in-out 2; }
+.pet__sprite.motion-tremble { animation: petTremble .5s ease-in-out 3; }
+
+@keyframes petBreathe {
+  0%, 100% { transform: translateY(0) rotate(0deg) scaleY(1); }
+  28%      { transform: translateY(-2.6%) rotate(-1deg) scaleY(1.012); }
+  62%      { transform: translateY(1.2%) rotate(1deg) scaleY(.995); }
+}
+/* 四拍走路循环：着地 → 抬身 → 换脚着地 → 抬身（带重心左右偏移与挤压） */
+@keyframes petWalkCycle {
+  0%   { transform: translateY(0)     rotate(-1.5deg) scale(1.005, .995); }
+  12%  { transform: translateY(-3.4%) rotate(0.4deg)  scale(.99, 1.012); }
+  25%  { transform: translateY(-5.2%) rotate(1.5deg)  scale(.985, 1.022); }
+  37%  { transform: translateY(-3.4%) rotate(0.4deg)  scale(.99, 1.012); }
+  50%  { transform: translateY(0)     rotate(1.5deg)  scale(1.005, .995); }
+  62%  { transform: translateY(-3.4%) rotate(-0.4deg) scale(.99, 1.012); }
+  75%  { transform: translateY(-5.2%) rotate(-1.5deg) scale(.985, 1.022); }
+  87%  { transform: translateY(-3.4%) rotate(-0.4deg) scale(.99, 1.012); }
+  100% { transform: translateY(0)     rotate(-1.5deg) scale(1.005, .995); }
+}
+/* 走路时脚下的影子跟着起伏（踩地时实、抬身时虚） */
+@keyframes petWalkShadow {
+  0%, 100% { opacity: .95; transform: translateX(-50%) scale(1, 1); }
+  50%      { opacity: .62; transform: translateX(-50%) scale(.86, .8); }
+}
+@keyframes petBounce {
+  0%   { transform: translateY(0) scale(1, 1); }
+  35%  { transform: translateY(-9%) scale(.985, 1.03); }
+  70%  { transform: translateY(0) scale(1.03, .975); }
+  100% { transform: translateY(0) scale(1, 1); }
+}
+@keyframes petShake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25%      { transform: translateX(-2.4%) rotate(-3deg); }
+  75%      { transform: translateX(2.4%) rotate(3deg); }
+}
+@keyframes petDizzy {
+  0%   { transform: rotate(0deg) translateX(0); }
+  25%  { transform: rotate(-4deg) translateX(-2%); }
+  50%  { transform: rotate(0deg) translateX(0); }
+  75%  { transform: rotate(4deg) translateX(2%); }
+  100% { transform: rotate(0deg) translateX(0); }
+}
+@keyframes petPat {
+  0%, 100% { transform: scale(1, 1); }
+  40%      { transform: scale(1.035, .955); }
+  70%      { transform: scale(.99, 1.015); }
+}
+@keyframes petTremble {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  30%      { transform: translateX(-1.4%) rotate(-1.4deg); }
+  70%      { transform: translateX(1.4%) rotate(1.4deg); }
+}
+
+/* 脚下阴影 */
+.pet__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 62%;
+  height: 12px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, .42), transparent 72%);
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.pet.is-dragging .pet__shadow { opacity: .3; transform: translateX(-50%) scale(.7); }
+
+/* 说话气泡 */
+.pet__bubble {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  transform: translate(-50%, 6px);
+  max-width: 16em;
+  padding: 8px 12px;
+  border-radius: 12px 12px 12px 3px;
+  font-size: .82rem;
+  line-height: 1.5;
+  white-space: nowrap;
+  color: #3a0f22;
+  background: linear-gradient(160deg, #ffe6f0, #ffc9de);
+  border: 1px solid rgba(255, 255, 255, .7);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .38);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease, visibility .18s;
+}
+.pet__bubble::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  bottom: -7px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8px 8px 0 0;
+  border-color: #ffc9de transparent transparent transparent;
+}
+.pet.is-talking .pet__bubble { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pet__sprite, .pet__sprite[class*="motion-"] { animation: none !important; }
+}
+
+/* =========================================================
+   手机端优化
+   ========================================================= */
+@media (max-width: 720px) {
+  /* 气泡：手机上允许换行、不超出屏幕宽度 */
+  .pet__bubble {
+    white-space: normal;
+    max-width: min(13em, 58vw);
+    line-height: 1.45;
+    padding: 7px 10px;
+    font-size: .78rem;
+  }
+  .pet__shadow { height: 9px; width: 58%; }
+}
+/* iOS：底部安全区（home 指示条）不压住桌宠 */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .pet { padding-bottom: 0; }
+}
+/* 触屏设备：别显示 hover 相关的位移，避免点一下"粘住" */
+@media (hover: none) {
+  .pet__poster:hover .vid__play { transform: none; }
+}

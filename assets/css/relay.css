@@ -1,0 +1,801 @@
+/* =========================================================
+   接力作品 · 子页面样式
+   侧栏分类 + 成员名单 + 棒次卡片（参考 lilywhite.fun 布局）
+   ========================================================= */
+
+.relay-head { padding-top: 56px; }
+
+.relay-intro {
+  max-width: 42em;
+  margin: 0 auto 30px;
+  text-align: center;
+  font-size: .98rem;
+  color: var(--ink-dim);
+  line-height: 2;
+}
+
+/* ---------- 侧栏 + 内容 双栏 ---------- */
+.relay-layout {
+  display: grid;
+  grid-template-columns: 262px 1fr;
+  gap: 26px;
+  align-items: start;
+  text-align: left;
+}
+.relay-side {
+  position: sticky;
+  top: 92px;
+  padding: 22px 20px;
+}
+.relay-side__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-family: var(--font-play);
+  font-size: 1.06rem;
+  letter-spacing: .1em;
+  color: var(--snow);
+}
+.relay-side__title::before {
+  content: '❄';
+  font-size: .72rem;
+  color: var(--pink-hot);
+}
+.relay-side__title + .relay-side__title { margin-top: 26px; }
+
+.relay-cats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.relay-cat {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ink-dim);
+  font: inherit;
+  font-size: .92rem;
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.relay-cat:hover {
+  color: var(--snow);
+  background: rgba(255, 200, 221, .08);
+}
+.relay-cat.is-active {
+  color: var(--pink-hot);
+  border-color: rgba(255, 170, 205, .35);
+  background: linear-gradient(90deg, rgba(255, 180, 210, .16), rgba(255, 180, 210, .05));
+  font-weight: 600;
+}
+.relay-cat--soon { opacity: .55; cursor: not-allowed; }
+.relay-cat--soon:hover { color: var(--ink-dim); background: transparent; }
+
+.relay-members {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.relay-member-year {
+  padding: 6px 4px;
+  font-size: .86rem;
+  letter-spacing: .14em;
+  color: var(--ice-soft);
+}
+.relay-member-year:not(:first-child) { margin-top: 8px; }
+/* 成员名单：与作品卡一致，只列「第几棒 / 作者 / 说明 / 链接」 */
+.relay-member {
+  padding: 8px 4px 8px 13px;
+  border-left: 2px solid rgba(230, 148, 242, .22);
+  font-size: .8rem;
+  line-height: 1.7;
+  color: var(--ink-dim);
+}
+.relay-member + .relay-member { margin-top: 6px; }
+.relay-member__head {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.relay-member__no {
+  font-family: var(--font-play);
+  font-size: .82rem;
+  letter-spacing: .04em;
+  color: var(--ice-soft);
+}
+.relay-member__author { color: var(--snow); }
+.relay-member__desc { margin: 2px 0 0; opacity: .92; }
+.relay-member__link {
+  display: inline-block;
+  margin-top: 3px;
+  font-size: .76rem;
+  letter-spacing: .04em;
+  color: var(--ice);
+  text-decoration: none;
+}
+.relay-member__link:hover { color: var(--snow); text-decoration: underline; }
+.relay-member-empty {
+  padding: 2px 4px 6px 16px;
+  font-size: .8rem;
+  color: var(--ink-faint);
+  opacity: .85;
+}
+
+/* ---------- 侧边栏：进入成员名单页的入口 ---------- */
+.relay-side__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5em;
+  margin: 2px 4px 6px;
+  padding: .55em 1.15em;
+  border-radius: 999px;
+  border: 1px solid rgba(230, 148, 242, .3);
+  background: rgba(242, 148, 184, .08);
+  color: var(--ice-soft);
+  font-size: .85rem;
+  letter-spacing: .08em;
+  text-decoration: none;
+  transition: background .22s ease, color .22s ease, border-color .22s ease;
+}
+.relay-side__link svg { width: 1.1em; height: 1.1em; }
+.relay-side__link:hover {
+  background: rgba(242, 148, 184, .18);
+  border-color: var(--ice);
+  color: var(--snow);
+}
+
+/* ---------- 成员名单：页内子视图（接力页内容区切换） ---------- */
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 6px;
+}
+.members-year__title {
+  margin: 0 0 14px;
+  font-family: var(--font-play);
+  font-size: 1.05rem;
+  letter-spacing: .12em;
+  color: var(--ice);
+}
+.members-year__title::after {
+  content: '';
+  display: block;
+  width: 46px;
+  height: 2px;
+  margin-top: 8px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--ice), transparent);
+}
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(258px, 1fr));
+  gap: 16px;
+}
+/* 页面里的成员条目做成卡片，比侧边栏版本更舒展 */
+.members-grid .relay-member {
+  padding: 15px 17px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  border-left: 2px solid rgba(230, 148, 242, .38);
+  background: rgba(43, 11, 23, .5);
+  font-size: .86rem;
+  transition: transform .24s ease, border-color .24s ease, box-shadow .24s ease;
+}
+.members-grid .relay-member:hover {
+  transform: translateY(-3px);
+  border-color: rgba(243, 189, 252, .34);
+  box-shadow: 0 18px 42px rgba(18, 2, 20, .5);
+}
+.members-grid .relay-member__no { font-size: 1rem; }
+.members-grid .relay-member__author { font-size: .92rem; }
+.members-grid .relay-member__desc { margin-top: 7px; line-height: 1.75; }
+.members-note {
+  margin: 0;
+  padding: 10px 2px;
+  font-size: .86rem;
+  color: var(--ink-faint);
+}
+.members-note.is-error { color: #ffa3a3; }
+
+/* ---------- 页内视图切换（接力作品 ←→ 成员名单） ---------- */
+.relay-view[hidden] { display: none; }
+.relay-view__note {
+  margin: 0 0 18px;
+  font-size: .88rem;
+  line-height: 1.85;
+  color: var(--ink-dim);
+  opacity: .92;
+}
+/* 侧边栏的成员名单入口：和年份分类同一套外观 */
+#relayMembersBtn { margin-top: 2px; }
+.relay-member-names {
+  padding: 2px 4px 6px 16px;
+  font-size: .8rem;
+  color: var(--ink-dim);
+  line-height: 1.9;
+  opacity: .9;
+}
+
+.relay-content { min-width: 0; }
+.relay-content__title {
+  margin: 4px 0 16px;
+  font-family: var(--font-play);
+  font-size: 1.2rem;
+  letter-spacing: .12em;
+  color: var(--ice);
+}
+
+/* ---------- 作品网格（竖卡：图在上，文字在下） ---------- */
+.relay-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 22px;
+}
+
+.relay-item {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: artIn .55s ease both;
+  transition: transform .28s ease, box-shadow .32s ease;
+}
+.relay-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 26px 64px rgba(18, 2, 20, .62), inset 0 1px 0 rgba(255, 255, 255, .1);
+}
+.relay-item__media {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  background: #270915;
+}
+.relay-item--video .relay-item__media { object-fit: contain; }
+
+.relay-item__body { padding: 14px 16px 16px; }
+.relay-item__no {
+  margin: 0 0 4px;
+  font-size: .74rem;
+  letter-spacing: .12em;
+  color: var(--pink-hot);
+  font-variant-numeric: tabular-nums;
+}
+.relay-item__name {
+  margin: 0 0 8px;
+  font-size: .96rem;
+  color: var(--ink);
+}
+.relay-item__name b {
+  color: var(--snow);
+  font-family: var(--font-play);
+  font-weight: 600;
+}
+.relay-item__cap { display: flex; flex-direction: column; gap: 6px; }
+.relay-item__desc {
+  margin: 0;
+  font-size: .84rem;
+  line-height: 1.8;
+  color: var(--ink-dim);
+}
+.relay-item__desc--muted { opacity: .55; }
+.relay-item__link {
+  align-self: flex-start;
+  font-size: .8rem;
+  color: var(--ice);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(230, 123, 168, .7);
+  padding-bottom: 1px;
+}
+.relay-item__link:hover { color: var(--ice-soft); }
+
+.relay-item__del {
+  position: absolute;
+  top: 10px; right: 10px;
+  z-index: 2;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .25);
+  background: rgba(31, 7, 16, .7);
+  color: #ffd3d3;
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background .2s ease, transform .2s ease;
+}
+.relay-item__del:hover { background: rgba(170, 64, 84, .65); transform: scale(1.08); }
+
+.relay-filter-empty {
+  grid-column: 1 / -1;
+  margin: 6px 0 0;
+  text-align: center;
+  font-size: .9rem;
+  color: var(--ink-dim);
+  opacity: .8;
+}
+
+
+
+/* ---------- 加载骨架占位 ---------- */
+.relay-grid .skel { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius); }
+
+/* ---------- 空状态 ---------- */
+.relay-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 64px 28px;
+  border-style: dashed;
+}
+.relay-empty__flake {
+  display: inline-block;
+  font-size: 2.6rem;
+  color: var(--ice);
+  opacity: .85;
+  animation: spinSlow 14s linear infinite;
+}
+.relay-empty__title {
+  margin: 14px 0 6px;
+  font-family: var(--font-play);
+  font-size: 1.2rem;
+  letter-spacing: .08em;
+  color: var(--snow);
+}
+.relay-empty__note {
+  margin: 0;
+  font-size: .9rem;
+  line-height: 2.1;
+  color: var(--ink-dim);
+}
+.relay-empty__note code {
+  margin: 0 .15em;
+  padding: .15em .55em;
+  border-radius: 6px;
+  border: 1px solid rgba(230, 148, 242, .18);
+  background: rgba(242, 148, 184, .1);
+  color: var(--ice-soft);
+  font-size: .85em;
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 960px) {
+  .relay-layout { grid-template-columns: 1fr; }
+  .relay-side { position: static; }
+  .relay-cats { flex-direction: row; flex-wrap: wrap; }
+  .relay-cat { width: auto; padding: 8px 14px; }
+}
+@media (max-width: 480px) {
+  .relay-grid { grid-template-columns: 1fr; gap: 16px; }
+}
+
+/* ---------- 冬至 · 蕾蒂解冻倒计时 ---------- */
+.winter-count { text-align: center; }
+.winter-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  padding: clamp(26px, 4.6vw, 54px) clamp(16px, 3vw, 40px);
+}
+.winter-card::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background:
+    radial-gradient(42% 42% at 20% 30%, rgba(230, 123, 168, .13), transparent 60%),
+    radial-gradient(40% 40% at 82% 24%, rgba(219, 154, 179, .12), transparent 60%),
+    radial-gradient(46% 46% at 55% 90%, rgba(255, 190, 215, .10), transparent 62%);
+  pointer-events: none;
+  filter: blur(18px);
+}
+.winter-card__head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.winter-mascot { position: relative; width: 86px; flex: 0 0 auto; }
+.winter-mascot img {
+  width: 100%;
+  display: block;
+  animation: winterShiver 2.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 16px rgba(230, 123, 168, .5));
+}
+@keyframes winterShiver {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  25% { transform: translate(-1.6px, 1.2px) rotate(-2deg); }
+  50% { transform: translate(1.6px, -1.2px) rotate(2deg); }
+  75% { transform: translate(-1px, -1.6px) rotate(-1.6deg); }
+}
+.winter-mascot__badge {
+  position: absolute;
+  top: -8px; right: -10px;
+  width: 28px; height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(248, 200, 255, .4);
+  background: rgba(83, 25, 47, .9);
+  color: var(--ice);
+  font-size: 14px;
+  animation: spinSlow 9s linear infinite;
+}
+.winter-card__label { text-align: left; max-width: 30em; }
+.winter-card__target {
+  margin: 0 0 6px;
+  font-size: .86rem;
+  letter-spacing: .2em;
+  color: var(--mint);
+}
+.winter-card__note {
+  margin: 0;
+  font-size: .92rem;
+  line-height: 1.9;
+  color: var(--ink-dim);
+}
+.winter-card__note strong { color: var(--pink-hot); }
+
+.winter-clock {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.8vw, 18px);
+  flex-wrap: wrap;
+}
+.winter-clock__cell {
+  min-width: clamp(76px, 11vw, 158px);
+  padding: clamp(14px, 2.4vw, 26px) clamp(10px, 1.8vw, 20px);
+  border-radius: 24px;
+  border: 1px solid rgba(250, 214, 255, .3);
+  background: linear-gradient(172deg, rgba(255, 205, 224, .16), rgba(225, 112, 155, .08));
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .16);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.winter-clock__num {
+  font-family: var(--font-play);
+  font-size: clamp(2.8rem, 9vw, 6rem);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(180deg, #fff0f6 0%, #f8b7d2 52%, #f4acc8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 5px 20px rgba(226, 117, 243, .4));
+}
+.winter-clock__num.pop { animation: numPop .5s ease; }
+@keyframes numPop {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+.winter-clock__unit {
+  font-size: .76rem;
+  letter-spacing: .5em;
+  padding-left: .5em;
+  color: var(--ink-dim);
+}
+.winter-clock__colon {
+  align-self: center;
+  padding-bottom: 30px;
+  font-size: clamp(1.8rem, 5vw, 3.4rem);
+  font-weight: 700;
+  color: var(--ice-soft);
+  opacity: .75;
+  animation: colonBlink 1s steps(1) infinite;
+}
+@keyframes colonBlink { 50% { opacity: .15; } }
+.winter-card__foot {
+  position: relative;
+  margin: 0;
+  font-family: var(--font-hand-jp);
+  font-size: .92rem;
+  letter-spacing: .14em;
+  color: var(--ice-soft);
+  opacity: .92;
+}
+
+@media (max-width: 760px) {
+  .winter-clock__colon { padding-bottom: 22px; }
+  .winter-card__head { text-align: center; }
+}
+
+/* ---------- 彩蛋 · 角落里的蕾蒂 ---------- */
+
+/* =========================================================
+   文章类接力作品：明亮冰原卡片（简洁设计）
+   浅色磨砂底 + 一条极光细线 + 右下角一枚雪花水印
+   深色文字保证对比，整体鲜亮干净
+   ========================================================= */
+.relay-item--text .relay-item__media { padding: 0; }
+.relay-textcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 190px;
+  padding: 20px 18px 14px;
+  text-align: left;
+  overflow: hidden;
+  color: #562b5d;
+  background-color: #fff4f8;
+  background-image:
+    /* 单一装饰①：右下角雪花水印（部分裁切，像印在纸角） */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%23e67ba8' stroke-width='2.6' stroke-linecap='round' opacity='0.5'%3E%3Cg transform='translate(80 80)'%3E%3Cpath d='M0 -34V34M-29.4 -17L29.4 17M-29.4 17L29.4 -17'/%3E%3Cpath d='M0 -34l-9 -9M0 -34l9 -9M0 34l-9 9M0 34l9 9M-29.4 -17l-11 1.6M-29.4 -17l-1.6 -11M29.4 17l11 -1.6M29.4 17l1.6 11M-29.4 17l-11 -1.6M-29.4 17l-1.6 11M29.4 -17l11 1.6M29.4 -17l1.6 -11'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+    /* 单一装饰②：顶部极光带 */
+    linear-gradient(180deg, rgba(228, 124, 167, .22), rgba(255, 255, 255, 0) 46%),
+    /* 冰原磨砂渐变 */
+    linear-gradient(165deg, #ffffff 0%, #fff0f6 44%, #fcdeea 100%);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: right -34px bottom -40px, top left, top left;
+  background-size: 150px 150px, auto, auto;
+  border: 1px solid rgba(230, 148, 242, .5);
+  box-shadow: 0 10px 24px rgba(99, 29, 110, .13), inset 0 1px 0 rgba(255, 255, 255, .92);
+}
+/* 顶部极光细线：唯一强调元素 */
+.relay-textcard::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #e67ba8, #db98b4 55%, #db9ab3);
+  opacity: .8;
+}
+.relay-textcard > * { position: relative; z-index: 1; }
+.relay-textcard__title {
+  margin: 0;
+  font-family: var(--font-play);
+  font-size: 1.04rem;
+  font-weight: 700;
+  color: #3a1540;
+}
+.relay-textcard__body {
+  margin: 0;
+  flex: 1 1 auto;
+  font-size: .85rem;
+  line-height: 1.95;
+  color: #5a3260;
+  white-space: pre-wrap;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+.relay-textcard__foot {
+  align-self: flex-end;
+  font-size: .76rem;
+  color: #7d3a88;
+  font-weight: 600;
+}
+/* 卡片可点击（全屏查看）提示 */
+.relay-item.is-clickable { cursor: zoom-in; transition: transform .22s ease, box-shadow .25s ease; }
+.relay-item.is-clickable:hover { transform: translateY(-3px); box-shadow: 0 20px 44px rgba(18, 2, 20, .5); }
+.relay-item.is-clickable:focus-visible { outline: 2px solid var(--ice); outline-offset: 3px; }
+
+/* =========================================================
+   接力作品全屏查看（与画廊大图同款）
+   ========================================================= */
+.rlb {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 4, 7, .87);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+.rlb.open { display: flex; animation: rlbFade .2s ease; }
+@keyframes rlbFade { from { opacity: 0; } to { opacity: 1; } }
+body.rlb-open { overflow: hidden; }
+
+.rlb-body {
+  max-width: 94vw;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.rlb-stage { display: flex; align-items: center; justify-content: center; }
+.rlb-media {
+  max-width: 94vw;
+  max-height: 78vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, .6);
+  background: #0f0509;
+}
+/* 文章：纸张阅读视图，可上下滚动 */
+.rlb-stage.is-text { align-items: flex-start; }
+.rlb-article {
+  width: min(720px, 92vw);
+  max-height: 78vh;
+  overflow-y: auto;
+  padding: 34px 38px;
+  border-radius: 14px;
+  /* 明亮冰原：磨砂浅底 + 一角雪花水印 + 顶部极光细线 */
+  position: relative;
+  background-color: #fff6f9;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23e67ba8' stroke-width='3' stroke-linecap='round' opacity='0.42'%3E%3Cg transform='translate(100 100)'%3E%3Cpath d='M0 -42V42M-36.4 -21L36.4 21M-36.4 21L36.4 -21'/%3E%3Cpath d='M0 -42l-11 -11M0 -42l11 -11M0 42l-11 11M0 42l11 11M-36.4 -21l-13.6 2M-36.4 -21l-2 -13.6M36.4 21l13.6 -2M36.4 21l2 13.6M-36.4 21l-13.6 -2M-36.4 21l-2 13.6M36.4 -21l13.6 2M36.4 -21l2 -13.6'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(180deg, rgba(228, 124, 167, .18), rgba(255, 255, 255, 0) 30%),
+    linear-gradient(168deg, #ffffff 0%, #fff1f6 48%, #fde1ec 100%);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: right -56px bottom -60px, top left, top left;
+  background-size: 210px 210px, auto, auto;
+  border: 1px solid rgba(230, 148, 242, .45);
+  color: #4a2550;
+  font-size: .95rem;
+  line-height: 2.05;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .95);
+}
+.rlb-article::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #e67ba8, #db98b4 55%, #db9ab3);
+  opacity: .85;
+  border-radius: 14px 14px 0 0;
+}
+.rlb-cap {
+  font-size: .9rem;
+  color: var(--ink-dim, #d3a8d9);
+  text-align: center;
+  line-height: 1.9;
+}
+.rlb-link { margin-left: .6em; color: var(--ice, #e67ba8); }
+.rlb-close {
+  position: fixed;
+  right: 18px;
+  top: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(248, 200, 255, .4);
+  background: rgba(33, 7, 17, .6);
+  color: #fceaff;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.rlb-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 72px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(33, 7, 17, .5);
+  color: #fceaff;
+  font-size: 1.9rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.rlb-nav--prev { left: 14px; }
+.rlb-nav--next { right: 14px; }
+.rlb-close:hover, .rlb-nav:hover { background: rgba(112, 38, 66, .8); }
+@media (max-width: 640px) {
+  .rlb-nav { width: 38px; height: 58px; font-size: 1.5rem; }
+  .rlb-article { padding: 20px 18px; font-size: .9rem; line-height: 1.95; }
+  .rlb-media { max-height: 70vh; }
+}
+/* =========================================================
+   管理员专属：卡片编辑 / 删除按钮 + 编辑弹窗
+   ========================================================= */
+.relay-item__tools {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: none;                 /* 默认隐藏，仅管理员可见 */
+  gap: 6px;
+  z-index: 3;
+}
+body.is-admin .relay-item__tools { display: flex; }
+.relay-item__edit,
+.relay-item__del {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(248, 200, 255, .45);
+  background: rgba(33, 7, 17, .68);
+  color: #fceaff;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.relay-item__edit:hover { background: rgba(183, 57, 105, .85); border-color: var(--ice); }
+.relay-item__del:hover { background: rgba(190, 60, 90, .85); border-color: rgba(255, 160, 190, .8); }
+
+.redit {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 4, 7, .82);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+.redit.open { display: flex; animation: reditFade .18s ease; }
+@keyframes reditFade { from { opacity: 0; } to { opacity: 1; } }
+body.redit-open { overflow: hidden; }
+.redit__box {
+  width: min(460px, 92vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px 22px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(243, 189, 252, .3);
+  background: rgba(41, 11, 23, .96);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, .6);
+}
+.redit__title {
+  margin: 0 0 4px;
+  font-family: var(--font-play);
+  font-size: 1.1rem;
+  color: var(--snow);
+}
+.redit__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: .82rem;
+  color: var(--ink-dim);
+}
+.redit__field input,
+.redit__field select {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(243, 189, 252, .28);
+  background: rgba(33, 7, 17, .8);
+  color: var(--snow);
+  font-size: .95rem;
+  font-family: inherit;
+}
+.redit__field input:focus,
+.redit__field select:focus { outline: 2px solid var(--ice); outline-offset: 1px; }
+.redit__error { margin: 0; font-size: .82rem; color: #ffa3b8; }
+.redit__error[hidden] { display: none; }
+.redit__actions { display: flex; gap: 10px; justify-content: flex-end; }
+/* 深色阅读视图里的链接与选中色 */
+.rlb-article a { color: #810794; text-decoration: underline; }
+.rlb-article ::selection { background: rgba(230, 123, 168, .35); color: #350f3b; }
