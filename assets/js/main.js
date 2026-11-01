@@ -306,7 +306,7 @@
 
   /* ==================== 22. 离开页面时停止所有媒体（手机端切页不再"后台还在放"） ==================== */
   (() => {
-    const stopAll = (why) => {
+    const stopAll = () => {
       $$('audio, video').forEach((m) => {
         try {
           if (!m.paused) { m.pause(); }
@@ -318,11 +318,11 @@
     };
 
     // ① 正常导航离开 / 进入往返缓存
-    window.addEventListener('pagehide', () => stopAll('pagehide'));
-    window.addEventListener('beforeunload', () => stopAll('beforeunload'));
+    window.addEventListener('pagehide', stopAll);
+    window.addEventListener('beforeunload', stopAll);
 
     // ② 切到后台或锁屏（手机最常见）
-    document.addEventListener('visibilitychange', () => { if (document.hidden) stopAll('hidden'); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) stopAll(); });
 
     // ③ 点站内链接要跳走时，立刻停（有些 App 内置浏览器不销毁旧页面）
     document.addEventListener('click', (e) => {
@@ -331,7 +331,7 @@
       if (a.target === '_blank' || a.getAttribute('target') === '_blank' || a.hasAttribute('download')) return;
       const href = a.getAttribute('href') || '';
       if (!href || href.charAt(0) === '#' || /^(https?:)?\/\//i.test(href) || /^(mailto|tel):/i.test(href)) return;
-      stopAll('navigate');
+      stopAll();
     }, true);
   })();
 

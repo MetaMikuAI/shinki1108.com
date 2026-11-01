@@ -1,0 +1,501 @@
+/* =========================================================
+   魔界扭蛋机（页脚）· 只在有扭蛋机的页面加载
+   依赖 style.css 或 new.css 提供的 .btn 按钮样式
+   ========================================================= */
+.gacha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  flex-wrap: wrap;
+  margin: 30px auto 26px;
+  padding: 22px 26px;
+  max-width: 560px;
+  border-radius: 20px;
+}
+/* ---- 机台 ---- */
+.gacha__machine {
+  position: relative;
+  width: 128px;
+  cursor: pointer;
+  flex: 0 0 auto;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .2s ease;
+}
+.gacha__machine:hover { transform: translateY(-2px); }
+.gacha__machine:focus-visible { outline: 2px solid var(--pink, #e2608a); outline-offset: 6px; border-radius: 14px; }
+/* 玻璃罩 */
+.gacha__dome {
+  position: relative;
+  width: 128px;
+  height: 108px;
+  border-radius: 64px 64px 10px 10px;
+  border: 2px solid rgba(242, 190, 212, .55);
+  background:
+    radial-gradient(circle at 34% 24%, rgba(255, 255, 255, .42), rgba(255, 255, 255, 0) 46%),
+    radial-gradient(circle at 50% 120%, rgba(226, 96, 138, .35), rgba(24, 6, 16, .72) 70%);
+  box-shadow: inset 0 6px 18px rgba(255, 255, 255, .16), 0 10px 24px rgba(12, 0, 8, .45);
+  overflow: hidden;
+}
+.gacha__glare {
+  position: absolute; top: 10px; left: 16px;
+  width: 26px; height: 44px; border-radius: 50%;
+  background: linear-gradient(160deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0));
+  transform: rotate(-18deg); filter: blur(1px);
+}
+/* 里面的扭蛋 */
+.gacha__ball {
+  position: absolute;
+  width: 26px; height: 26px; border-radius: 50%;
+  box-shadow: inset -3px -4px 8px rgba(0, 0, 0, .35), inset 3px 3px 6px rgba(255, 255, 255, .5);
+}
+.gacha__ball--1 { left: 12px; top: 62px; background: radial-gradient(circle at 34% 30%, #ffd9e7, #e2608a); }
+.gacha__ball--2 { left: 40px; top: 74px; background: radial-gradient(circle at 34% 30%, #e6dcff, #8b6fd6); }
+.gacha__ball--3 { left: 68px; top: 66px; background: radial-gradient(circle at 34% 30%, #fff2c9, #d8a63c); }
+.gacha__ball--4 { left: 92px; top: 76px; background: radial-gradient(circle at 34% 30%, #cfeaff, #4f8fd6); }
+.gacha__ball--5 { left: 26px; top: 44px; background: radial-gradient(circle at 34% 30%, #ffe0ef, #c14d7c); }
+.gacha__ball--6 { left: 62px; top: 40px; background: radial-gradient(circle at 34% 30%, #d8fff0, #3fae86); }
+/* 机身 */
+.gacha__body {
+  position: relative;
+  width: 128px; height: 58px;
+  margin-top: -6px;
+  border-radius: 12px 12px 16px 16px;
+  background: linear-gradient(180deg, #a8365f, #7b2447 60%, #5f1a37);
+  border: 1px solid rgba(255, 190, 220, .28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 10px 22px rgba(10, 0, 6, .45);
+}
+.gacha__knob {
+  position: absolute; left: 50%; top: 12px;
+  width: 26px; height: 26px; margin-left: -13px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #fff4f8, #cf6f95 55%, #8c2a4e);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .45), inset 0 0 0 2px rgba(255, 255, 255, .18);
+  transition: transform .5s cubic-bezier(.3, 1.6, .5, 1);
+}
+.gacha__knob::before {
+  content: ''; position: absolute; left: 50%; top: 3px;
+  width: 2px; height: 9px; margin-left: -1px; border-radius: 2px;
+  background: rgba(90, 20, 45, .7);
+}
+.gacha__slot {
+  position: absolute; left: 50%; bottom: 10px;
+  width: 42px; height: 9px; margin-left: -21px;
+  border-radius: 6px;
+  background: rgba(18, 4, 12, .85);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, .8), 0 1px 0 rgba(255, 255, 255, .12);
+}
+/* 扭动时的抖动 */
+.gacha.is-turning .gacha__dome { animation: gachaShake .11s linear 8; }
+.gacha.is-turning .gacha__ball { animation: gachaJiggle .22s ease-in-out infinite alternate; }
+.gacha.is-turning .gacha__knob { transform: rotate(540deg); }
+@keyframes gachaShake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  25% { transform: translateX(-3px) rotate(-1.4deg); }
+  75% { transform: translateX(3px) rotate(1.4deg); }
+}
+@keyframes gachaJiggle {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(-4px) scale(1.06); }
+}
+/* 右侧文案 */
+.gacha__side { text-align: left; max-width: 260px; }
+.gacha__title {
+  font-size: 1.06rem; letter-spacing: .08em; margin: 0 0 6px;
+  color: var(--snow, #fff);
+}
+.gacha__hint { font-size: .84rem; line-height: 1.7; color: var(--ink-dim, #c9b6c2); margin: 0 0 12px; }
+
+/* ---- 结果弹窗 ---- */
+.gacha-modal {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  background: rgba(10, 2, 8, .74);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: gachaFade .22s ease;
+}
+.gacha-modal[hidden] { display: none; }
+@keyframes gachaFade { from { opacity: 0; } to { opacity: 1; } }
+.gacha-modal__box {
+  position: relative;
+  width: min(340px, 86vw);
+  padding: 26px 22px 22px;
+  border-radius: 22px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(48, 16, 32, .96), rgba(24, 8, 18, .98));
+  border: 1px solid rgba(242, 190, 212, .32);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .1);
+  animation: gachaPop .34s cubic-bezier(.2, 1.5, .4, 1);
+}
+@keyframes gachaPop { from { transform: scale(.72) translateY(18px); opacity: 0; } to { transform: none; opacity: 1; } }
+.gacha-modal__close {
+  position: absolute; right: 10px; top: 8px;
+  width: 32px; height: 32px; border: 0; border-radius: 50%;
+  background: rgba(255, 255, 255, .08); color: #fff; font-size: 20px; line-height: 1;
+  cursor: pointer;
+}
+.gacha-modal__close:hover { background: rgba(255, 255, 255, .18); }
+.gacha-modal__img {
+  width: min(190px, 52vw); height: auto; display: block; margin: 6px auto 10px;
+  filter: drop-shadow(0 10px 22px rgba(226, 96, 138, .45));
+}
+.gacha-modal__fortune {
+  display: inline-block; margin: 0 0 10px; padding: 4px 16px;
+  border-radius: 999px; font-size: .86rem; letter-spacing: .16em;
+  color: #ffd9e7; background: rgba(226, 96, 138, .2);
+  border: 1px solid rgba(242, 190, 212, .4);
+}
+/* 结果文案：原来是"图片名"的标题样式，现在是整段祝福语 → 改成正文排版 */
+.gacha-modal__label {
+  margin: 0 0 14px;
+  font-size: .95rem;
+  font-weight: 500;
+  line-height: 1.9;
+  letter-spacing: .02em;
+  color: #ffe9f2;
+  text-wrap: pretty;
+}
+/* 运势配色：吉 → 金/粉，凶 → 暗红/青 */
+.gacha-modal__box[data-rank="daikichi"] .gacha-modal__fortune { color: #ffe9a8; background: rgba(216, 166, 60, .24); border-color: rgba(255, 226, 150, .6); }
+.gacha-modal__box[data-rank="kichi"] .gacha-modal__fortune { color: #ffd9e7; background: rgba(226, 96, 138, .26); border-color: rgba(255, 190, 215, .55); }
+.gacha-modal__box[data-rank="shokichi"] .gacha-modal__fortune { color: #d8fff0; background: rgba(63, 174, 134, .22); border-color: rgba(150, 235, 205, .5); }
+.gacha-modal__box[data-rank="he"] .gacha-modal__fortune { color: #e6dcff; background: rgba(139, 111, 214, .22); border-color: rgba(200, 186, 245, .5); }
+.gacha-modal__box[data-rank="kyo"] .gacha-modal__fortune { color: #ffc9c9; background: rgba(190, 60, 70, .24); border-color: rgba(255, 170, 170, .5); }
+.gacha-modal__box[data-rank="special"] .gacha-modal__fortune { color: #fff; background: rgba(226, 96, 138, .45); border-color: #fff; }
+/* 扭蛋本体：从出货口落下来，然后裂开爆开 */
+.gacha__capsule {
+  position: absolute;
+  left: 50%; bottom: -10px;
+  width: 78px; margin-left: -39px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+  will-change: transform, opacity;
+}
+.gacha__capsule img { display: block; width: 100%; height: auto; }
+.gacha.is-dropping .gacha__capsule { opacity: 1; animation: capDrop .62s cubic-bezier(.26, 1.5, .5, 1) both; }
+.gacha.is-bursting .gacha__capsule { animation: capBurst .36s ease-out both; }
+@keyframes capDrop {
+  from { transform: translateY(-30px) scale(.82); opacity: 0; }
+  60% { opacity: 1; }
+  to { transform: translateY(8px) scale(1); opacity: 1; }
+}
+@keyframes capBurst {
+  from { transform: translateY(8px) scale(1); opacity: 1; }
+  to { transform: translateY(4px) scale(1.14); opacity: 1; }
+}
+/* 今天已经扭过：机台变灰、按钮禁用 */
+.gacha.is-used .gacha__machine { filter: grayscale(.45) brightness(.82); opacity: .72; cursor: not-allowed; }
+.gacha.is-used .gacha__machine:hover { transform: none; }
+.gacha.is-used .gacha__ball { animation: none; }
+.gacha-modal__note {
+  margin: 0 0 14px; font-size: .82rem; line-height: 1.7;
+  color: var(--ink-dim, #c9b6c2);
+}
+.gacha-modal__note b { color: #ffd9e7; font-weight: 600; }
+@media (max-width: 560px) {
+  .gacha { gap: 18px; padding: 18px 16px; flex-direction: column; text-align: center; }
+  .gacha__side { text-align: center; max-width: 300px; }
+  .gacha__machine { transform: scale(.92); }
+}
+
+/* =========================================================
+   扭蛋机 · 按吉凶分级的特效
+   用 CSS 变量把"光线强度 / 光晕颜色 / 星点颜色"抽出来，各档只改变量
+   ========================================================= */
+.gacha-modal__box {
+  --fx-rays: 0;                    /* 光芒强度 */
+  --fx-spark: #ffd9e7;             /* 星点颜色 */
+  --fx-glow: rgba(226, 96, 138, .45);                 /* 星点大小倍率 */
+}
+.gacha-modal__box[data-rank="he"]        { --fx-rays: 0;   --fx-glow: rgba(139, 111, 214, .34); --fx-spark: #e6dcff; }
+.gacha-modal__box[data-rank="shokichi"]  { --fx-rays: .22; --fx-glow: rgba(63, 174, 134, .42);  --fx-spark: #d8fff0; }
+.gacha-modal__box[data-rank="kichi"]     { --fx-rays: .42; --fx-glow: rgba(226, 96, 138, .5);   --fx-spark: #ffd9e7; }
+.gacha-modal__box[data-rank="daikichi"]  { --fx-rays: .9;  --fx-glow: rgba(216, 166, 60, .6);   --fx-spark: #ffe9a8; }
+.gacha-modal__box[data-rank="kyo"]       { --fx-rays: 0;   --fx-glow: rgba(190, 60, 70, .52);   --fx-spark: #ffc9c9; }
+.gacha-modal__box[data-rank="special"]   { --fx-rays: 1;   --fx-glow: rgba(255, 255, 255, .62); --fx-spark: #ffffff; }
+
+/* ---- 特效层 ---- */
+.gacha-fx {
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.gacha-fx__rays {
+  position: absolute; left: 50%; top: 42%;
+  width: 320%; height: 320%;
+  margin: -160% 0 0 -160%;
+  background: repeating-conic-gradient(from 0deg,
+    var(--fx-spark) 0deg 4deg, transparent 4deg 16deg);
+  opacity: calc(var(--fx-rays) * .28);
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 58%);
+  mask-image: radial-gradient(circle, #000 0%, transparent 58%);
+  animation: fxSpin 26s linear infinite;
+}
+.gacha-fx__rays--2 { animation: fxSpin 17s linear infinite reverse; opacity: calc(var(--fx-rays) * .18); }
+.gacha-fx__halo {
+  position: absolute; left: 50%; top: 44%;
+  width: 210px; height: 210px; margin: -105px 0 0 -105px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--fx-glow) 0%, transparent 66%);
+  opacity: var(--fx-rays);
+  animation: fxPulse 2.4s ease-in-out infinite;
+}
+.gacha-fx__spark {
+  position: absolute; left: 50%; top: 46%;
+  width: var(--size, 5px); height: var(--size, 5px);
+  margin: calc(var(--size, 5px) / -2) 0 0 calc(var(--size, 5px) / -2);
+  border-radius: 50%;
+  background: var(--fx-spark);
+  box-shadow: 0 0 8px var(--fx-spark), 0 0 16px var(--fx-glow);
+  opacity: 0;
+  animation: fxSpark 1.5s cubic-bezier(.16, .8, .32, 1) var(--delay, 0s) forwards;
+}
+@keyframes fxSpin { to { transform: rotate(360deg); } }
+@keyframes fxPulse { 0%, 100% { transform: scale(.86); opacity: calc(var(--fx-rays) * .7); } 50% { transform: scale(1.08); opacity: var(--fx-rays); } }
+@keyframes fxSpark {
+  0% { opacity: 0; transform: translate(0, 0) scale(.4); }
+  18% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--tx, 0), var(--ty, 0)) scale(1); }
+}
+/* 内容压在特效层之上 */
+.gacha-modal__fortune, .gacha-modal__img, .gacha-modal__label, .gacha-modal__note, .gacha-modal__close { position: relative; z-index: 1; }
+
+/* ---- 大吉：金光 + 弹一下 ---- */
+.gacha-modal__box[data-rank="daikichi"] { animation: gachaPop .34s cubic-bezier(.2, 1.5, .4, 1), fxGold 1.6s ease-out; border-color: rgba(255, 226, 150, .7); }
+@keyframes fxGold {
+  0% { box-shadow: 0 0 0 rgba(255, 226, 150, 0), 0 30px 70px rgba(0, 0, 0, .6); }
+  22% { box-shadow: 0 0 46px rgba(255, 226, 150, .75), 0 30px 70px rgba(0, 0, 0, .6); }
+  100% { box-shadow: 0 0 0 rgba(255, 226, 150, 0), 0 30px 70px rgba(0, 0, 0, .6); }
+}
+/* ---- 凶：红光 + 抖一下 + 图片褪色 ---- */
+.gacha-modal__box[data-rank="kyo"] { border-color: rgba(255, 150, 150, .45); animation: gachaPop .34s cubic-bezier(.2, 1.5, .4, 1), fxBad .6s ease-in-out .08s; }
+.gacha-modal__box[data-rank="kyo"] .gacha-modal__img { filter: drop-shadow(0 10px 22px rgba(190, 60, 70, .5)) saturate(.72) brightness(.94); }
+@keyframes fxBad {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px) rotate(-.8deg); }
+  45% { transform: translateX(6px) rotate(.7deg); }
+  70% { transform: translateX(-4px); }
+}
+
+/* ---- 太神绮了 / 太黑绮了：加倍 ---- */
+.gacha-modal__box[data-rank="special"] {
+  border-color: #fff;
+  animation: gachaPop .42s cubic-bezier(.16, 1.7, .4, 1), fxSpecialGlow 2.2s linear infinite;
+}
+@keyframes fxSpecialGlow {
+  0%   { box-shadow: 0 0 30px rgba(255, 120, 190, .8), 0 30px 70px rgba(0, 0, 0, .6); }
+  33%  { box-shadow: 0 0 44px rgba(255, 226, 150, .85), 0 30px 70px rgba(0, 0, 0, .6); }
+  66%  { box-shadow: 0 0 44px rgba(140, 210, 255, .85), 0 30px 70px rgba(0, 0, 0, .6); }
+  100% { box-shadow: 0 0 30px rgba(255, 120, 190, .8), 0 30px 70px rgba(0, 0, 0, .6); }
+}
+/* 彩虹旋转背景 */
+.gacha-modal__box[data-rank="special"]::before {
+  content: ''; position: absolute; left: 50%; top: 44%;
+  width: 460px; height: 460px; margin: -230px 0 0 -230px;
+  border-radius: 50%;
+  background: conic-gradient(#ff6fae, #ffd166, #7ee0a8, #6fc3ff, #b98cff, #ff6fae);
+  filter: blur(26px);
+  opacity: .34;
+  z-index: 0;
+  animation: fxSpin 6s linear infinite;
+}
+/* 整屏闪光 */
+.gacha-modal.is-special::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, .95), transparent 62%);
+  animation: fxFlash .85s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes fxFlash { 0% { opacity: 0; } 12% { opacity: 1; } 100% { opacity: 0; } }
+/* 图片彩色流转 + 轻微蹦跳 */
+.gacha-modal__box[data-rank="special"] .gacha-modal__img {
+  animation: fxHue 2.4s linear infinite, fxHop .9s ease-in-out infinite alternate;
+  filter: drop-shadow(0 12px 28px rgba(255, 255, 255, .5));
+}
+@keyframes fxHue { to { filter: hue-rotate(360deg) drop-shadow(0 12px 28px rgba(255, 255, 255, .5)); } }
+@keyframes fxHop { from { transform: translateY(0) scale(1); } to { transform: translateY(-6px) scale(1.03); } }
+/* 文字彩色描边闪动 */
+.gacha-modal__box[data-rank="special"] .gacha-modal__label {
+  background: linear-gradient(90deg, #ff8fc0, #ffe08a, #8ff0c0, #8fd0ff, #c9a6ff, #ff8fc0);
+  background-size: 300% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  animation: fxText 2.4s linear infinite;
+}
+@keyframes fxText { to { background-position: 300% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .gacha-fx__rays, .gacha-fx__halo, .gacha-fx__spark,
+  .gacha-modal__box[data-rank="special"]::before,
+  .gacha-modal__box[data-rank="special"] .gacha-modal__img,
+  .gacha-modal__box[data-rank="special"] .gacha-modal__label,
+  .gacha-modal.is-special::after { animation: none; }
+}
+
+/* =========================================================
+   特效升级：彩蛋专属背景图 · 凶档优化 · 太黑绮了（凶）
+   ========================================================= */
+/* 静音开关 */
+.gacha__sound {
+  margin-left: 10px; padding: 6px 10px;
+  border-radius: 999px; cursor: pointer;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(242, 190, 212, .3);
+  color: inherit; font-size: .95rem; line-height: 1;
+}
+.gacha__sound:hover { background: rgba(255, 255, 255, .16); }
+.gacha__sound[aria-pressed="true"] { opacity: .45; }
+
+/* 彩蛋专属背景（用生图插件做的两张光效图 + 径向羽化，边缘不会露方块） */
+.gacha-fx__bg {
+  position: absolute; inset: -8%;
+  background-position: center; background-size: cover;
+  opacity: 0;
+  -webkit-mask-image: radial-gradient(circle at 50% 46%, #000 42%, transparent 76%);
+  mask-image: radial-gradient(circle at 50% 46%, #000 42%, transparent 76%);
+  transition: opacity .35s ease;
+}
+.gacha-modal__box[data-rank="special"] .gacha-fx__bg {
+  background-image: url('../img/gacha/bg-good.webp');
+  opacity: .92;
+  animation: fxBgSpin 22s linear infinite;
+}
+.gacha-modal__box[data-rank="special-bad"] .gacha-fx__bg {
+  background-image: url('../img/gacha/bg-bad.webp');
+  opacity: .95;
+  animation: fxBgSpin 26s linear infinite reverse;
+}
+@keyframes fxBgSpin { from { transform: rotate(0) scale(1.02); } to { transform: rotate(360deg) scale(1.02); } }
+
+/* 凶档：向下飘落的暗色碎屑 */
+.gacha-fx__fall { position: absolute; inset: 0; overflow: hidden; }
+.gacha-fx__flake {
+  position: absolute; top: -12%;
+  width: var(--w, 4px); height: var(--h, 8px);
+  left: var(--fx, 50%);
+  border-radius: 1px;
+  background: var(--flake, rgba(190, 60, 70, .85));
+  box-shadow: 0 0 6px var(--flake, rgba(190, 60, 70, .6));
+  opacity: 0;
+  animation: fxFall var(--dur, 2.2s) linear var(--delay, 0s) infinite;
+}
+@keyframes fxFall {
+  0% { opacity: 0; transform: translateY(0) rotate(0); }
+  12% { opacity: .9; }
+  100% { opacity: 0; transform: translateY(300px) rotate(220deg); }
+}
+
+/* 凶档：内圈红光呼吸 + 图片摇晃 + 文字闪烁 */
+.gacha-modal__box[data-rank="kyo"]::after,
+.gacha-modal__box[data-rank="special-bad"]::after {
+  content: ''; position: absolute; inset: 0;
+  border-radius: inherit; pointer-events: none; z-index: 0;
+  box-shadow: inset 0 0 70px rgba(150, 20, 35, .6);
+  animation: fxVig 1.9s ease-in-out infinite alternate;
+}
+@keyframes fxVig {
+  from { box-shadow: inset 0 0 46px rgba(150, 20, 35, .35); }
+  to { box-shadow: inset 0 0 86px rgba(170, 24, 40, .72); }
+}
+.gacha-modal__box[data-rank="kyo"] .gacha-modal__img,
+.gacha-modal__box[data-rank="special-bad"] .gacha-modal__img {
+  animation: fxWob 2.6s ease-in-out infinite;
+}
+@keyframes fxWob {
+  0%, 100% { transform: rotate(-1.6deg) translateY(0); }
+  50% { transform: rotate(1.6deg) translateY(-3px); }
+}
+.gacha-modal__box[data-rank="kyo"] .gacha-modal__label,
+.gacha-modal__box[data-rank="special-bad"] .gacha-modal__label {
+  animation: fxFlick 3.1s steps(1) infinite;
+}
+@keyframes fxFlick {
+  0%, 88%, 100% { opacity: 1; }
+  90% { opacity: .35; }
+  93% { opacity: 1; }
+  95% { opacity: .5; }
+}
+/* 太黑绮了：彩蛋规格 + 凶的配色 */
+.gacha-modal__box[data-rank="special-bad"] {
+  border-color: rgba(255, 150, 170, .75);
+  animation: gachaPop .42s cubic-bezier(.16, 1.7, .4, 1), fxBadGlow 2.4s linear infinite;
+}
+@keyframes fxBadGlow {
+  0%   { box-shadow: 0 0 30px rgba(190, 40, 70, .85), 0 30px 70px rgba(0, 0, 0, .6); }
+  50%  { box-shadow: 0 0 48px rgba(120, 60, 220, .85), 0 30px 70px rgba(0, 0, 0, .6); }
+  100% { box-shadow: 0 0 30px rgba(190, 40, 70, .85), 0 30px 70px rgba(0, 0, 0, .6); }
+}
+.gacha-modal__box[data-rank="special-bad"]::before {
+  content: ''; position: absolute; left: 50%; top: 44%;
+  width: 440px; height: 440px; margin: -220px 0 0 -220px;
+  border-radius: 50%;
+  background: conic-gradient(#7a1030, #3a0c3f, #b01c46, #2b0a2e, #7a1030);
+  filter: blur(30px); opacity: .5; z-index: 0;
+  animation: fxSpin 9s linear infinite reverse;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gacha-fx__bg, .gacha-fx__flake,
+  .gacha-modal__box[data-rank="kyo"]::after, .gacha-modal__box[data-rank="special-bad"]::after,
+  .gacha-modal__box[data-rank="kyo"] .gacha-modal__img, .gacha-modal__box[data-rank="special-bad"] .gacha-modal__img,
+  .gacha-modal__box[data-rank="kyo"] .gacha-modal__label, .gacha-modal__box[data-rank="special-bad"] .gacha-modal__label,
+  .gacha-modal__box[data-rank="special-bad"]::before { animation: none; }
+}
+
+/* =========================================================
+   扭蛋机 · 手机端优化
+   ========================================================= */
+/* 机台：去掉双击缩放、加大点按区域 */
+.gacha__machine { touch-action: manipulation; }
+@media (max-width: 560px) {
+  /* 弹窗：适配矮屏，内容可滚动，留出安全区 */
+  .gacha-modal {
+    padding: calc(14px + env(safe-area-inset-top, 0px)) 14px calc(14px + env(safe-area-inset-bottom, 0px));
+    align-items: center;
+  }
+  .gacha-modal__box {
+    width: min(330px, 92vw);
+    max-height: 88vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 22px 16px 18px;
+    border-radius: 20px;
+  }
+  .gacha-modal__img { width: min(158px, 44vw); margin: 4px auto 8px; }
+  .gacha-modal__label { font-size: .9rem; line-height: 1.8; margin-bottom: 10px; }
+  .gacha-modal__fortune { font-size: .8rem; padding: 3px 13px; letter-spacing: .12em; }
+  .gacha-modal__note { font-size: .78rem; margin-bottom: 8px; }
+  .gacha-modal__close { width: 38px; height: 38px; font-size: 22px; right: 6px; top: 6px; }
+
+  /* 特效按屏幕缩放：原来光芒层是 320%、彩蛋背景是 460px 固定尺寸，
+     窄屏上会溢出弹窗 → 这里等比收小 */
+  .gacha-fx__rays { width: 250%; height: 250%; margin: -125% 0 0 -125%; }
+  .gacha-fx__halo { width: 160px; height: 160px; margin: -80px 0 0 -80px; }
+  .gacha-modal__box[data-rank="special"]::before,
+  .gacha-modal__box[data-rank="special-bad"]::before {
+    width: 290px; height: 290px; margin: -145px 0 0 -145px;
+    filter: blur(18px);
+  }
+  .gacha-modal__box[data-rank="kyo"]::after,
+  .gacha-modal__box[data-rank="special-bad"]::after { box-shadow: inset 0 0 44px rgba(150, 20, 35, .5); }
+
+  /* 机台与扭蛋略缩，文案居中 */
+  .gacha__machine { transform: scale(.9); }
+  .gacha__capsule { width: 66px; margin-left: -33px; bottom: -8px; }
+  .gacha__sound { min-width: 42px; min-height: 42px; margin-left: 8px; }
+
+  /* 手机端把"扭一次"和静音键排一行、居中 */
+  .gacha__side { display: flex; flex-direction: column; align-items: center; }
+  .gacha__side > .btn { margin-bottom: 2px; }
+}
+/* 极矮屏（横屏手机等）：进一步压缩 */
+@media (max-height: 520px) and (max-width: 900px) {
+  .gacha-modal__box { max-height: 92vh; padding: 16px 14px 14px; }
+  .gacha-modal__img { width: min(120px, 30vw); }
+  .gacha-modal__label { font-size: .86rem; line-height: 1.75; margin-bottom: 6px; }
+}
+/* 锁背景滚动时给 body 一个类（由 JS 切换） */
+body.gacha-locked { overflow: hidden; }

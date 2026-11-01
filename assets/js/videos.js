@@ -7,7 +7,6 @@
   'use strict';
 
   var grid = document.getElementById('vidGrid');
-  var emptyBox = document.getElementById('vidEmpty');
   if (!grid) return;
 
   var DATA_URL = 'assets/data/videos.json';
@@ -68,12 +67,6 @@
     poster.className = 'vid__poster';
     poster.setAttribute('aria-label', '播放：' + (item.title || item.bvid));
 
-    var cover = document.createElement('img');
-    cover.className = 'vid__cover';
-    cover.alt = '';
-    cover.hidden = true;                       // 有封面地址才显示
-    poster.appendChild(cover);
-
     var play = document.createElement('span');
     play.className = 'vid__play';
     play.innerHTML = '<i></i><b>点击播放</b>';
@@ -114,10 +107,6 @@
       card.classList.add('is-playing');
     });
 
-    card.__titleEl = h3;
-    card.__metaEl = meta;
-    card.__coverEl = cover;
-    card.__noteEl = note;
     return card;
   }
 
@@ -134,14 +123,8 @@
         var loading = grid.querySelector('.vid-loading');
         if (loading) loading.remove();
 
-        if (!list.length) {
-          if (emptyBox) emptyBox.hidden = false;
-          return;
-        }
-
         list.forEach(function (it) {
-          it.__card = buildCard(it);
-          grid.appendChild(it.__card);
+          grid.appendChild(buildCard(it));
         });
 
       })

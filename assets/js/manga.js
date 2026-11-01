@@ -1,6 +1,6 @@
 /* =========================================================
    四格与表情包 · 页面脚本
-   结构照搬蕾蒂之家的阅读器：目录 → 四格阅读器 / 表情包网格
+   结构：目录 → 四格阅读器 / 表情包网格
    · 懒加载（只加载你正在看的那几页）
    · 进度条、翻话、键盘 ← → / Esc
    · 记住每话读到哪一页
@@ -9,7 +9,6 @@
   'use strict';
 
   const INDEX_URL = 'manga/index.json';
-  const AHEAD_PX = 1600;              // 提前加载范围
   const LAST_KEY = 'shinki-manga-last';
 
   const $ = (s, r = document) => r.querySelector(s);
@@ -24,8 +23,6 @@
   const progressEl = $('#mgProgress');
   const pageImg = $('#mgPageImg');
   const pagePh = $('#mgPagePh');
-  const prevBtn = $('#mgPrev');
-  const nextBtn = $('#mgNext');
   const packBarTitle = $('#mgPackTitle');
   const packCount = $('#mgPackCount');
   const gridEl = $('#mgGrid');
@@ -40,7 +37,6 @@
   let collections = [];
   let current = null;      // 当前合集
   let pages = [];          // 当前页文件名
-  let io = null;           // 懒加载观察器
   let packIdx = 0;         // 表情包大图当前序号
   let pageIdx = 0;         // 四格当前页（0 基）
   let packPages = [];
@@ -275,8 +271,6 @@
   const goList = () => { if (light && !light.hidden) closeLight(); showView('list'); window.scrollTo({ top: 0, behavior: 'auto' }); };
   $('#mgBack').addEventListener('click', goList);
   $('#mgPackBack').addEventListener('click', goList);
-  if (prevBtn) prevBtn.addEventListener('click', () => pageStep(-1));   // 上一话 = 上一页（只有一个四格合集）
-  if (nextBtn) nextBtn.addEventListener('click', () => pageStep(1));
   const prevPageBtn = $('#mgPrevPage'), nextPageBtn = $('#mgNextPage');
   if (prevPageBtn) prevPageBtn.addEventListener('click', () => pageStep(-1));
   if (nextPageBtn) nextPageBtn.addEventListener('click', () => pageStep(1));

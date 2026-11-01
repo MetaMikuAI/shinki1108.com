@@ -14,32 +14,6 @@
   var ASSET_V = 3;                                   // 素材缓存版本，换素材时 +1
   function ASSET(name) { return 'assets/pet/' + name + '?v=' + ASSET_V; }
 
-  /* 兜底清单（manifest 读不到时用，保证桌宠一定出得来） */
-  var FALLBACK = {
-    clips: {
-      idle: { frames: [{ pose: 'p3', expr: 1 }], loop: true, motion: 'breathe' },
-      blink: { frames: [{ pose: 'p3', expr: 2 }], loop: false, holdMs: 260 },
-      glance: { frames: [{ pose: 'p3', expr: 4 }], loop: false, holdMs: 420 },
-      walk: { frames: [{ pose: 'p2', expr: 1 }], loop: true, motion: 'walk' },
-      happy: { frames: [{ pose: 'p4', expr: 2 }], loop: false, holdMs: 1100, motion: 'bounce' },
-      angry: { frames: [{ pose: 'p4', expr: 5 }], loop: false, holdMs: 1200, motion: 'shake' },
-      dizzy: { frames: [{ pose: 'p1', expr: 3 }], loop: true, motion: 'dizzy' },
-      dragging: { frames: [{ pose: 'p1', expr: 4 }], loop: true },
-      drop: { frames: [{ pose: 'p2', expr: 3 }], loop: false, holdMs: 700, motion: 'bounce' },
-      head_pat: { frames: [{ pose: 'p3', expr: 3 }], loop: false, holdMs: 1400, motion: 'pat' },
-      sleep: { frames: [{ pose: 'p1', expr: 1 }], loop: true, motion: 'breathe' },
-      wakeup: { frames: [{ pose: 'p3', expr: 5 }], loop: false, holdMs: 900, motion: 'bounce' }
-    },
-    idleMicroClips: ['blink', 'glance'],
-    config: { size: 156, speed: 42, idleToSleep: 30000, microEveryMs: 5200, microChance: 0.45, activityLevel: 'normal', bubbleMode: 'events', reducedMotion: false },
-    lines: {
-      poke: ['别戳啦，会痒的。', '……有什么事吗？', '黑绮士 669，报到。'],
-      head_pat: ['唔……摸头可不是对神明的礼节。', '……就一下哦。'],
-      angry: ['巫女什么的，不过是神的狗而已！'],
-      drop: ['哇——！'], dizzy: ['头……好晕……'], sleep: ['zzZ……'], wakeup: ['唔……谁呀？']
-    }
-  };
-
   var ACTIVITY = { quiet: 0.0008, normal: 0.0022, lively: 0.0055 };
 
   var cfg, clips, micros, lines, root, flip, sprite, bubble, shadow;
@@ -50,7 +24,7 @@
   var lastPoseAt = Date.now(), microSince = 0, lastMicroAt = 0;
   var lastStateSeen = 'IDLE', stateSince = Date.now();   // 状态看门狗
   var releaseStalePress = null;                          // 由 bindPointer 注入
-  var pressAlive = function () { return null; };          // 由 bindPointer 注入   // 最后一次换姿势/表情的时间（防呆心跳用）   // 睡眠相关计时器
+  var pressAlive = function () { return null; };          // 由 bindPointer 注入
   var draggingSince = 0, dragDistance = 0, pokeTimes = [];
   var STATE = 'IDLE', previewing = false, clipName = 'idle';
 
@@ -452,10 +426,10 @@
   }
 
   function start(manifest) {
-    clips = (manifest && manifest.clips) || FALLBACK.clips;
-    micros = (manifest && manifest.idleMicroClips) || FALLBACK.idleMicroClips;
-    lines = (manifest && manifest.lines) || FALLBACK.lines;
-    var mc = (manifest && manifest.config) || {};
+    clips = manifest.clips;
+    micros = manifest.idleMicroClips || [];
+    lines = manifest.lines || {};
+    var mc = manifest.config || {};
 
     cfg = Object.assign({
       mount: document.body, size: mc.size || 156, speed: mc.speed || 42,
@@ -489,11 +463,6 @@
     bindPointer();
     backToIdle();
     startMicro();
-    try {
-      console.log('[桌宠] 已启动 · clip ' + Object.keys(clips).length + ' 个 · ' +
-        (cfg.reducedMotion ? '系统开了减少动态效果（骨骼动作已减，但换表情照常）' : '正常模式') +
-        ' · 待机心跳 ' + (cfg.idleChangeMax || 9000) + 'ms');
-    } catch (_) {}
     armSleep();
     loop();
 

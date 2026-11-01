@@ -11,7 +11,7 @@
     if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
 
     /* 接力时间 · 11.8
-       把 shinki 六个小写字母的 ASCII 码相加得到 454，16 进制转 8 进制即 1108 → 11 月 08 日；
+       大写 SHINKI 六个字母的 ASCII 码相加得到 454，把 454 当十六进制读，即十进制 1108 → 11 月 08 日；
        其中的 8 也是躺下来的「无限」∞，对应神绮角色曲英文副标题里的 Infinite Being。 */
     function nextTarget(now) {
       const y = now.getFullYear();
