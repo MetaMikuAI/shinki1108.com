@@ -12,6 +12,7 @@
 
   var MANIFEST_URL = 'assets/pet/pet-manifest.json';
   var POS_KEY = 'shinki-pet-pos';                     // 跨页记住位置（sessionStorage）
+  var MANIFEST_KEY = 'shinki-pet-manifest';           // 本次会话缓存清单：下一页可立即创建桌宠，赶上首帧
   var ASSET_V = 3;                                   // 素材缓存版本，换素材时 +1
   function ASSET(name) { return 'assets/pet/' + name + '?v=' + ASSET_V; }
 
@@ -523,9 +524,14 @@
     start.__opts = opts || {};
     var done = false;
     function go(manifest) { if (done || !manifest) return; done = true; start(manifest); }
+    try { go(JSON.parse(sessionStorage.getItem(MANIFEST_KEY) || 'null')); } catch (_) {}
+    if (done) return API;
     fetch(MANIFEST_URL)
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(go)
+      .then(function (m) {
+        if (m) { try { sessionStorage.setItem(MANIFEST_KEY, JSON.stringify(m)); } catch (_) {} }
+        go(m);
+      })
       .catch(function () { go(null); });
     return API;
   }
