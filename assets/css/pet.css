@@ -17,6 +17,7 @@
   -webkit-touch-callout: none;          /* 手机上长按不弹系统菜单 */
   will-change: transform;
   transform: translate3d(0, 0, 0);   /* 供 JS 读取安全区高度 */
+  view-transition-name: pet;         /* 跨页过渡时留在原地 */
 }
 .pet.is-dragging { cursor: grabbing; }
 
@@ -130,14 +131,14 @@
   transform: translate(-50%, 6px);
   max-width: 16em;
   padding: 8px 12px;
-  border-radius: 12px 12px 12px 3px;
+  border-radius: 0;
   font-size: .82rem;
   line-height: 1.5;
   white-space: nowrap;
-  color: #3a0f22;
-  background: linear-gradient(160deg, #ffe6f0, #ffc9de);
-  border: 1px solid rgba(255, 255, 255, .7);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, .38);
+  color: var(--ink, #eeeeff);
+  background: var(--void, #000011);
+  border: 2px solid rgba(238, 238, 255, .8);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, .5);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -152,7 +153,7 @@
   height: 0;
   border-style: solid;
   border-width: 8px 8px 0 0;
-  border-color: #ffc9de transparent transparent transparent;
+  border-color: rgba(238, 238, 255, .8) transparent transparent transparent;
 }
 .pet.is-talking .pet__bubble { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
 

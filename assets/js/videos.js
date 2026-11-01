@@ -111,7 +111,7 @@
   }
 
   function main() {
-    fetch(DATA_URL, { cache: 'no-store' })
+    fetch(DATA_URL)
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
         return r.json();

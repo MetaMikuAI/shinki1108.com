@@ -4,7 +4,6 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isMobile = window.matchMedia('(max-width: 760px), (pointer: coarse)').matches;
 
 
   /* ==================== 2. 吸顶导航 ==================== */
@@ -82,12 +81,14 @@
   /* 兜底：脚本后插入的 .reveal 卡片不会被上面的观察器抓到（它只在加载时抓一次），
      这里定期补一次，避免"卡片/封面永远是 opacity:0" */
   const reinforceReveal = () => {
-    $$('.reveal:not(.in)').forEach((el) => {
+    const rest = $$('.reveal:not(.in)');
+    if (!rest.length) { clearInterval(reinforceTimer); return; }   // 全部显示后就停
+    rest.forEach((el) => {
       const r = el.getBoundingClientRect();
       if (r.top < innerHeight && r.bottom > 0) el.classList.add('in');
     });
   };
-  setInterval(reinforceReveal, 1200);
+  const reinforceTimer = setInterval(reinforceReveal, 1200);
   window.addEventListener('load', reinforceReveal);
 
   /* ==================== 5. 滚动高亮 ==================== */
@@ -119,24 +120,6 @@
   /* ==================== 7. 页脚年份 ==================== */
   const yearEl = $('#year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
-
-  /* ==================== 8. 夜穹星星 ==================== */
-  const starsBox = $('#bgStars');
-  if (starsBox && !reduceMotion) {
-    const frag = document.createDocumentFragment();
-    const starCount = Math.min(isMobile ? 55 : 90, Math.max(isMobile ? 28 : 40, Math.round(window.innerWidth / (isMobile ? 26 : 16))));
-    for (let i = 0; i < starCount; i++) {
-      const s = document.createElement('span');
-      s.className = 'star';
-      s.style.setProperty('--x', (Math.random() * 100).toFixed(2) + '%');
-      s.style.setProperty('--y', (Math.random() * 72).toFixed(2) + '%');
-      s.style.setProperty('--w', (1.2 + Math.random() * 1.8).toFixed(1) + 'px');
-      s.style.setProperty('--dur', (2.4 + Math.random() * 4).toFixed(2) + 's');
-      s.style.setProperty('--delay', (Math.random() * 6).toFixed(2) + 's');
-      frag.appendChild(s);
-    }
-    starsBox.appendChild(frag);
-  }
 
   /* ==================== 12. 章节定位圆点（主流风格：原生自由滚动 + 快速跳段） ==================== */
   (function initSectionDots() {

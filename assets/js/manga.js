@@ -49,7 +49,7 @@
   /* ---------------- 载入索引 ---------------- */
   async function boot() {
     try {
-      const r = await fetch(INDEX_URL, { cache: 'no-cache' });
+      const r = await fetch(INDEX_URL);
       if (!r.ok) throw new Error('HTTP ' + r.status);
       index = await r.json();
       collections = index.collections || [];
@@ -113,7 +113,7 @@
     current = c;
     let data = null;
     try {
-      const r = await fetch('manga/' + id + '/pages.json', { cache: 'no-cache' });
+      const r = await fetch('manga/' + id + '/pages.json');
       if (r.ok) data = await r.json();
     } catch (_) {}
     pages = (data && data.pages) || [];

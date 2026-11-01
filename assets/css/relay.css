@@ -1,101 +1,76 @@
 /* =========================================================
-   接力作品 · 子页面样式
+   接力作品（在 site.css 之后加载）
+   11.8 倒计时：拱形立绘 + 像素大字日期 + 四格计时
    ========================================================= */
-
-/* ---------- 接力时间 · 11.8 倒计时（基础层，shinki.css 里有重设计覆盖） ---------- */
-.winter-count { text-align: center; }
-.winter-card {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+.rt {
+  display: grid;
+  grid-template-columns: minmax(0, 240px) minmax(0, 1fr);
+  grid-template-areas:
+    "art main"
+    "note note";
+  gap: 24px 32px;
   align-items: center;
-  gap: 26px;
-  padding: clamp(26px, 4.6vw, 54px) clamp(16px, 3vw, 40px);
+  padding: 24px;
 }
-.winter-card::before {
-  content: '';
+.rt__portrait { grid-area: art; position: relative; margin: 0; }
+.rt__portrait img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: 50% 8%;
+  border: 2px solid var(--ink);
+  box-shadow: 0 0 0 4px var(--void), 0 0 0 6px var(--red);
+}
+.rt__badge {
   position: absolute;
-  inset: -40%;
-  background:
-    radial-gradient(42% 42% at 20% 30%, rgba(230, 123, 168, .13), transparent 60%),
-    radial-gradient(40% 40% at 82% 24%, rgba(219, 154, 179, .12), transparent 60%),
-    radial-gradient(46% 46% at 55% 90%, rgba(255, 190, 215, .10), transparent 62%);
-  pointer-events: none;
-  filter: blur(18px);
+  right: 10px; bottom: 8px;
+  font: 24px/1 var(--font-pixel);
+  color: #fff;
+  text-shadow: 2px 2px 0 var(--red-deep);
 }
-.winter-card__target {
-  margin: 0 0 6px;
-  font-size: .86rem;
-  letter-spacing: .2em;
-  color: var(--mint);
+.rt__main { grid-area: main; min-width: 0; }
+.rt__main .kicker { margin-bottom: 6px; }
+.rt__date {
+  margin: 0;
+  font: 96px/1 var(--font-pixel);
+  letter-spacing: .04em;
+  text-shadow: 6px 6px 0 var(--red-deep);
 }
-
-.winter-clock {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(8px, 1.8vw, 18px);
-  flex-wrap: wrap;
-}
-.winter-clock__cell {
-  min-width: clamp(76px, 11vw, 158px);
-  padding: clamp(14px, 2.4vw, 26px) clamp(10px, 1.8vw, 20px);
-  border-radius: 24px;
-  border: 1px solid rgba(250, 214, 255, .3);
-  background: linear-gradient(172deg, rgba(255, 205, 224, .16), rgba(225, 112, 155, .08));
-  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .16);
+.rt__target { margin: 12px 0 0; font: 12px/1.6 var(--font-pixel); color: var(--ink-faint); }
+.rt__lead { margin: 6px 0 0; color: var(--ink-dim); }
+.rt__lead strong, .rt__note strong { color: var(--ink); font-weight: 600; }
+.rt__clock { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+.rt__clock > div {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  padding: 12px 4px 10px;
+  background: rgba(0, 0, 17, .8);
+  border: 2px solid rgba(238, 238, 255, .6);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, .5);
 }
-.winter-clock__num {
-  font-family: var(--font-play);
-  font-size: clamp(2.8rem, 9vw, 6rem);
-  font-weight: 700;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  background: linear-gradient(180deg, #fff0f6 0%, #f8b7d2 52%, #f4acc8 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  filter: drop-shadow(0 5px 20px rgba(226, 117, 243, .4));
+.rt__num { font: 48px/1 var(--font-pixel); font-variant-numeric: tabular-nums; }
+.rt__num.pop { animation: numPop .45s steps(3); }
+@keyframes numPop { from { color: var(--red); } to { color: var(--ink); } }
+.rt__unit { margin-top: 8px; font: 12px/1 var(--font-pixel); color: var(--ink-faint); }
+.rt__foot { margin: 14px 0 0; font-size: .9rem; color: var(--ink-dim); }
+.rt__note {
+  grid-area: note;
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
+  column-count: 2;
+  column-gap: 3em;
 }
-.winter-clock__num.pop { animation: numPop .5s ease; }
-@keyframes numPop {
-  0% { transform: scale(1); }
-  30% { transform: scale(1.08); }
-  100% { transform: scale(1); }
-}
-.winter-clock__unit {
-  font-size: .76rem;
-  letter-spacing: .5em;
-  padding-left: .5em;
-  color: var(--ink-dim);
-}
-.winter-clock__colon {
-  align-self: center;
-  padding-bottom: 30px;
-  font-size: clamp(1.8rem, 5vw, 3.4rem);
-  font-weight: 700;
-  color: var(--ice-soft);
-  opacity: .75;
-  animation: colonBlink 1s steps(1) infinite;
-}
-@keyframes colonBlink { 50% { opacity: .15; } }
-.winter-card__foot {
-  position: relative;
-  margin: 0;
-  font-family: var(--font-hand-jp);
-  font-size: .92rem;
-  letter-spacing: .14em;
-  color: var(--ice-soft);
-  opacity: .92;
-}
+.rt__note p { margin: 0 0 .8em; font-size: .92rem; color: var(--ink-dim); break-inside: avoid; }
+.rt__note p:last-child { margin-bottom: 0; }
+.rt__note em { font-style: normal; color: var(--skin); }
 
 @media (max-width: 760px) {
-  .winter-clock__colon { padding-bottom: 22px; }
+  .rt { grid-template-columns: 1fr; grid-template-areas: "art" "main" "note"; padding: 20px 16px; }
+  .rt__portrait { width: min(220px, 100%); justify-self: center; }
+  .rt__date { font-size: 48px; text-shadow: 4px 4px 0 var(--red-deep); }
+  .rt__note { column-count: 1; }
 }
+@media (max-width: 480px) { .rt__num { font-size: 36px; } }
+@media (prefers-reduced-motion: reduce) { .rt__num.pop { animation: none; } }

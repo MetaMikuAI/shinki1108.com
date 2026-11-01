@@ -10,10 +10,12 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preload" href="assets/fonts/shinki-pixel.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/shinki-serif.woff2" as="font" type="font/woff2" crossorigin>
-  <script>document.documentElement.classList.add('js');</script>
+  <script>document.documentElement.classList.add('js'); document.documentElement.style.setProperty('--sky-t', -(Date.now() % 16000) / 1000 + 's');</script>
+  <link rel="stylesheet" href="assets/css/site.css">
   <link rel="stylesheet" href="assets/css/new.css">
   <link rel="stylesheet" href="assets/css/gacha.css">
   <link rel="stylesheet" href="assets/css/pet.css">
+  <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"*.html","relative_to":"document"},{"not":{"selector_matches":"[target=_blank]"}}]},"eagerness":"moderate"}]}</script>
   <meta name="theme-color" content="#000011">
   <meta name="color-scheme" content="dark">
   <meta property="og:type" content="website">
@@ -56,6 +58,7 @@
     </svg>
     <svg class="stage-bg__wings"><use href="#sixWings"/></svg>
   </div>
+  <div class="sky" aria-hidden="true"></div>
 
   <header class="site-header" id="siteHeader">
     <div class="site-header__inner">

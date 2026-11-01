@@ -1,126 +1,51 @@
 /* =========================================================
-   神绮站 · 科普小课堂（视频页）
-   布局：视频上下排列（单列），播放器尽量大
-   交互：封面 + 大播放键 → 点击在卡片内播放（不跳转 B 站）
+   669的科普小课堂（在 site.css 之后加载）
+   视频单列排列；封面 + 播放键，点击后在卡片内加载 B 站播放器
    ========================================================= */
-
-.vid-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 28px;
-  max-width: 1120px;
-  margin: 30px auto 0;
-}
-
+.vid-grid { display: grid; gap: 28px; }
 .vid {
-  border: 1px solid var(--glass-bd, rgba(242, 190, 212, .18));
-  border-radius: 18px;
-  background: var(--glass, rgba(42, 18, 34, .55));
-  overflow: hidden;
+  background: var(--panel);
+  border: 2px solid rgba(238, 238, 255, .7);
+  box-shadow: inset 0 0 0 2px var(--void), inset 0 0 0 3px rgba(238, 238, 255, .22), 6px 6px 0 rgba(0, 0, 0, .5);
 }
-
-.vid__head { padding: 17px 20px 12px; }
-.vid__title {
-  margin: 0;
-  font-family: var(--font-serif, serif);
-  font-size: clamp(1.05rem, 2.4vw, 1.32rem);
-  line-height: 1.6;
-  color: var(--snow, #fdf4f7);
-  word-break: break-word;
-}
-.vid__meta {
-  margin: 6px 0 0;
-  font-size: .84rem;
-  line-height: 1.7;
-  color: var(--ink-faint, #9d7f8f);
-}
+.vid__head { padding: 16px 20px 12px; border-bottom: 1px dashed var(--line); }
+.vid__title { margin: 0; font: 700 clamp(1.05rem, 2.4vw, 1.3rem)/1.6 var(--font-serif); word-break: break-word; }
+.vid__meta { margin: 4px 0 0; font: 12px/1.6 var(--font-pixel); color: var(--red); }
 
 /* ---------- 播放区 ---------- */
-.vid__stage {
-  position: relative;
-  width: 100%;
-  height: 560px;                 /* 老浏览器兜底 */
-  background: #000;
-}
-@supports (aspect-ratio: 16 / 9) {
-  .vid__stage {
-    height: auto;
-    aspect-ratio: 16 / 9;
-  }
-}
-
-/* 封面：渐变底 + 大播放键 */
+.vid__stage { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; }
 .vid__poster {
   position: absolute;
   inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   padding: 0;
   border: 0;
   cursor: pointer;
-  background:
-    radial-gradient(120% 120% at 18% 0%, rgba(226, 96, 138, .34), transparent 62%),
-    radial-gradient(120% 120% at 92% 100%, rgba(208, 106, 145, .34), transparent 64%),
-    linear-gradient(150deg, #2a1020, #14060e);
   color: #fff;
+  background: var(--stars-a) 0 0 / 360px 360px, var(--sky-glow);
 }
-.vid__poster:focus-visible { outline: 2px solid var(--ice, #e67ba8); outline-offset: -3px; }
-.vid__poster::after {           /* 压暗一点，让播放键更清楚 */
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(10, 2, 5, .12), rgba(10, 2, 5, .42));
-  pointer-events: none;
-}
-
-/* 大播放键 */
+.vid__poster:focus-visible { outline: 2px solid var(--skin); outline-offset: -4px; }
 .vid__play {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  left: 50%; top: 50%;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 22px 12px 16px;
-  border-radius: 999px;
-  background: rgba(12, 3, 9, .62);
-  border: 1.5px solid rgba(255, 222, 236, .55);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, .5);
-  transition: transform .2s ease, background .2s ease;
+  background: var(--red);
+  border: 2px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--red-deep);
+  transform: translate(-50%, -50%);
+  transition: transform .12s ease, box-shadow .12s ease;
 }
 .vid__play i {
-  display: block;
-  width: 0;
-  height: 0;
   border-style: solid;
-  border-width: 13px 0 13px 21px;
+  border-width: 11px 0 11px 18px;
   border-color: transparent transparent transparent #fff;
-  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, .6));
 }
-.vid__play b {
-  font-size: .95rem;
-  font-weight: 600;
-  letter-spacing: .06em;
-  color: #fff;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, .7);
-}
-.vid__poster:hover .vid__play {
-  transform: translate(-50%, -50%) scale(1.06);
-  background: rgba(226, 96, 138, .5);
-}
-
-/* 播放器（点击后才创建） */
-.vid__frame {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  background: #000;
-}
+.vid__play b { font: 600 15px/1 var(--font-sans); letter-spacing: .06em; }
+.vid__poster:hover .vid__play { transform: translate(calc(-50% - 2px), calc(-50% - 2px)); box-shadow: 8px 8px 0 var(--red-deep); }
+.vid__frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
 .vid.is-playing .vid__poster { display: none; }
 
 /* ---------- 底部 ---------- */
@@ -128,55 +53,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
   flex-wrap: wrap;
-  padding: 12px 20px 16px;
+  gap: 8px 12px;
+  padding: 12px 20px 14px;
+  border-top: 1px dashed var(--line);
 }
-.vid__note {
-  margin: 0;
-  font-size: .82rem;
-  color: var(--ink-faint, #9d7f8f);
-}
-.vid__link { font-size: .84rem; }
+.vid__note { margin: 0; font-size: .84rem; color: var(--ink-faint); }
+.vid__link { font-size: .86rem; }
 
 /* ---------- 载入 / 出错 ---------- */
-.vid-loading,
-.vid-error {
-  margin: 0 auto;
-  padding: 28px 24px;
-  border-radius: 16px;
-  border: 1px dashed rgba(242, 190, 212, .24);
-  background: rgba(24, 8, 16, .45);
-  color: var(--ink-dim, #cbb0bd);
-  font-size: .92rem;
-  line-height: 2;
+.vid-loading, .vid-error {
+  margin: 0;
+  padding: 24px;
   text-align: center;
-  max-width: 860px;
+  color: var(--ink-dim);
+  border: 2px dashed rgba(238, 238, 255, .3);
 }
-.vid-error {
-  border-style: solid;
-  border-color: rgba(255, 170, 120, .5);
-  background: rgba(48, 18, 8, .6);
-  color: #ffe0c8;
-  text-align: left;
-}
-.vid-error code {
-  padding: .1em .45em;
-  border-radius: 5px;
-  background: rgba(226, 96, 138, .16);
-  border: 1px solid rgba(242, 190, 212, .24);
-  color: var(--ice-soft, #f2c2cf);
-}
+.vid-error { color: #ffd0c0; text-align: left; border-color: var(--red); }
 
-@media (max-width: 900px) {
-  .vid-grid { gap: 22px; margin-top: 22px; }
-  .vid__stage { height: 420px; }
-}
 @media (max-width: 640px) {
-  .vid__stage { height: 260px; }
-  .vid__head { padding: 14px 15px 10px; }
-  .vid__foot { padding: 11px 15px 14px; }
-  .vid__play { padding: 10px 16px 10px 13px; gap: 9px; }
-  .vid__play i { border-width: 11px 0 11px 17px; }
-  .vid__play b { font-size: .86rem; }
+  .vid__head { padding: 14px 16px 10px; }
+  .vid__foot { padding: 10px 16px 12px; }
 }

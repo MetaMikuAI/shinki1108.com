@@ -11,6 +11,7 @@
   'use strict';
 
   var MANIFEST_URL = 'assets/pet/pet-manifest.json';
+  var POS_KEY = 'shinki-pet-pos';                     // 跨页记住位置（sessionStorage）
   var ASSET_V = 3;                                   // 素材缓存版本，换素材时 +1
   function ASSET(name) { return 'assets/pet/' + name + '?v=' + ASSET_V; }
 
@@ -383,6 +384,25 @@
   }
 
 
+  /* ---------------- 跨页位置 ---------------- */
+  function savePos() {
+    if (!root) return;
+    try {
+      sessionStorage.setItem(POS_KEY, JSON.stringify({ x: Math.round(x), y: Math.round(y), onGround: onGround, facing: facing }));
+    } catch (_) {}
+  }
+  function restorePos(p) {
+    if (!root || !p || typeof p.x !== 'number') return;
+    var b = bounds();
+    x = clamp(p.x, b.minX, b.maxX);
+    y = p.onGround === false ? clamp(p.y, b.minY, b.maxY) : b.maxY;
+    onGround = p.onGround !== false;
+    vy = 0;
+    facing = p.facing === -1 ? -1 : 1;
+    root.classList.remove('is-entering');
+    applyTransform();
+  }
+
   /* ---------------- 初始化 ---------------- */
   function buildDom() {
     root = document.createElement('div');
@@ -456,10 +476,21 @@
     x = Math.max(12, viewW() - cfg.size - 24);
     var startH = root.offsetHeight || cfg.size;
     y = Math.max(0, viewH() - startH - cfg.bottom);
-    applyTransform();
-    // 出场：轻轻落下
-    root.classList.add('is-entering');
-    setTimeout(function () { root.classList.remove('is-entering'); }, 1100);
+    if (cfg.restore) {
+      restorePos(cfg.restore);              // 从上一页过来：站在原地，不再从上方落下
+    } else {
+      applyTransform();
+      // 第一次出现：轻轻落下
+      root.classList.add('is-entering');
+      setTimeout(function () { root.classList.remove('is-entering'); }, 1100);
+    }
+    // 离开页面时存下位置，下一页接着用
+    window.addEventListener('pagehide', savePos);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) savePos(); });
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (a && !a.target) savePos();
+    }, true);
     bindPointer();
     backToIdle();
     startMicro();
@@ -492,7 +523,7 @@
     start.__opts = opts || {};
     var done = false;
     function go(manifest) { if (done || !manifest) return; done = true; start(manifest); }
-    fetch(MANIFEST_URL, { cache: 'no-store' })
+    fetch(MANIFEST_URL)
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(go)
       .catch(function () { go(null); });
@@ -511,6 +542,8 @@
     dizzy: function () { act(); dizzy(1600); },
     sleep: function () { enterSleep(); },
     wake: function () { wake(true); },
+    /** 恢复跨页位置（预渲染的页面在真正打开时调用） */
+    restore: function (p) { restorePos(p); },
     /** 调整贴底偏移（例如底部有控制台时把桌宠垫起来站上去） */
     setBottom: function (px) {
       cfg.bottom = Number(px) || 0;
