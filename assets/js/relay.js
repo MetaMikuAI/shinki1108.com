@@ -238,6 +238,9 @@
 
 
   /* ---------- 渲染 ---------- */
+  function bvPlayer(bvid, autoplay) {
+    return 'https://player.bilibili.com/player.html?isOutside=true&bvid=' + encodeURIComponent(bvid) + '&p=1&high_quality=1&autoplay=' + (autoplay ? 1 : 0);
+  }
   function itemMediaURL(item) {
     return item.file || item.data || '';
   }
@@ -251,7 +254,7 @@
     fig.setAttribute('role', 'button');
     fig.setAttribute('aria-label', '查看《' + (item.title || '无题') + '》全屏');
     fig.addEventListener('click', (e) => {
-      if (e.target.closest('a, video, .relay-item__tools')) return;   // 链接/视频控件/管理按钮不触发
+      if (e.target.closest('a, video, iframe, .relay-item__tools')) return;   // 链接/视频控件/管理按钮不触发
       openLightbox(item);
     });
     fig.addEventListener('keydown', (e) => {
@@ -263,7 +266,17 @@
 
     let media;
     const isText = item.kind === 'text';
-    if (item.kind === 'video') {
+    if (item.kind === 'video' && item.bvid) {          // B 站视频：嵌入官方播放器，不存视频文件
+      media = document.createElement('iframe');
+      media.src = bvPlayer(item.bvid, false);
+      media.loading = 'lazy';
+      media.allowFullscreen = true;
+      media.title = '《' + title + '》B 站视频';
+      media.setAttribute('scrolling', 'no');
+      media.setAttribute('referrerpolicy', 'no-referrer');
+      media.style.border = '0';
+      fig.classList.add('relay-item--video');
+    } else if (item.kind === 'video') {
       media = document.createElement('video');
       media.controls = true;
       media.preload = 'metadata';
@@ -472,6 +485,16 @@
       stage.appendChild(article);
       const t = await loadText(it);
       article.textContent = t || '（正文缺失）';
+    } else if (it.kind === 'video' && it.bvid) {
+      const f = document.createElement('iframe');
+      f.src = bvPlayer(it.bvid, true);
+      f.allowFullscreen = true;
+      f.title = '《' + (it.title || '无题') + '》B 站视频';
+      f.setAttribute('scrolling', 'no');
+      f.setAttribute('referrerpolicy', 'no-referrer');
+      f.className = 'rlb-media';
+      f.style.cssText = 'border:0;width:min(94vw,calc(78vh * 16 / 9));aspect-ratio:16/9;';
+      stage.appendChild(f);
     } else if (it.kind === 'video') {
       const v = document.createElement('video');
       v.src = itemMediaURL(it);
