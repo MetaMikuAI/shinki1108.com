@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>接力作品 — 神绮 · 魔界之神 · 同人二创展示</title>
-  <meta name="description" content="神绮（Shinki）接力作品展：按年份与成员浏览历届画作、视频与文章接力。">
+  <meta name="description" content="神绮（Shinki）接力作品展：按年份与成员浏览历届画作、视频与文章接力，支持线上投稿。">
   <link rel="icon" href="assets/img/favicon.png" type="image/png">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/relay.css">
@@ -39,6 +39,41 @@
   <div id="bgStars" aria-hidden="true"></div>
   <script src="assets/js/stars.js"></script>
 
+  <div class="bg-aurora-curtains" aria-hidden="true">
+    <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="aurG1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffb6d0" stop-opacity=".5"/>
+          <stop offset=".45" stop-color="#e2608a" stop-opacity=".2"/>
+          <stop offset="1" stop-color="#e2608a" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="aurG2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#c79cf0" stop-opacity=".42"/>
+          <stop offset=".55" stop-color="#9b6ad0" stop-opacity=".15"/>
+          <stop offset="1" stop-color="#9b6ad0" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="aurG3" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffd0e0" stop-opacity=".34"/>
+          <stop offset=".55" stop-color="#d98ab8" stop-opacity=".12"/>
+          <stop offset="1" stop-color="#d98ab8" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="aurBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="13"/></filter>
+      </defs>
+      <g class="aurora-curve aurora-curve--a" filter="url(#aurBlur)">
+        <path d="M-90 -60 C 140 150 330 -90 570 70 C 770 185 950 -70 1190 90 C 1330 175 1470 30 1530 130 L 1530 600 C 1300 440 1090 660 870 535 C 650 420 430 640 210 515 C 40 430 -50 560 -90 500 Z" fill="url(#aurG1)"/>
+      </g>
+      <g class="aurora-curve aurora-curve--b" filter="url(#aurBlur)">
+        <path d="M-70 80 C 170 -50 350 190 570 70 C 810 -90 1010 190 1230 50 C 1370 -50 1490 70 1530 70 L 1530 500 C 1310 580 1090 350 910 475 C 690 605 470 395 250 475 C 90 535 -30 460 -70 500 Z" fill="url(#aurG2)"/>
+      </g>
+      <g class="aurora-curve aurora-curve--c" filter="url(#aurBlur)">
+        <path d="M30 180 C 250 70 470 210 710 130 C 930 60 1150 210 1390 130 L 1450 210 L 1450 440 C 1190 520 950 350 730 455 C 510 555 270 415 70 475 L 30 440 Z" fill="url(#aurG3)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="bg-glow bg-glow--a" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--b" aria-hidden="true"></div>
+
+
 
 
 
@@ -62,7 +97,7 @@
     </div>
   </header>
 
-  <main id="main"><section class="section"><header class="section__head"><p class="section__kicker">SHINKI · RELAY</p><h1 class="section__title">接力作品</h1><p class="section__lead">把喜欢传下去，期待下一次相聚。</p></header><div class="notice-card glass"><p class="notice-card__lead">这里还没有作品。</p><p>先去看看魔界之神的四格日常吧。</p><a class="btn btn--primary" href="manga.html">阅读四格与表情包 →</a></div></section><section class="section page-head winter-count" id="winter">
+  <main id="main"><section class="section page-head winter-count" id="winter">
       <header class="section__head reveal">
         <p class="section__kicker">RELAY TIME · NOV 08</p>
         <h2 class="section__title">接力时间 · 11.8 倒计时</h2>
@@ -122,7 +157,59 @@
           </p>
         </div>
       </div>
-    </section></main>
+    </section>
+
+    <section class="section relay-head">
+      <header class="section__head reveal">
+        <p class="section__kicker">RELAY WORKS</p>
+        <h2 class="section__title">接力作品</h2>
+        <div class="section__divider" aria-hidden="true">
+          <svg viewBox="0 0 140 24" class="divider-mark"><path d="M2 12h46M92 12h46" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".55"/><path d="M70 3.5l5 8.5-5 8.5-5-8.5z" fill="currentColor" opacity=".9"/><path d="M70 1v22" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".45"/></svg>
+        </div>
+      </header>
+      <p class="relay-intro reveal">
+        一棒一棒接力的作品都在这里——画作、动画、文章……<br>
+        每一棒都像魔界的接力：把对神绮的喜欢，一棒一棒传下去。🖤
+      </p>
+
+
+
+      <div class="relay-layout">
+        <aside class="relay-side glass glass--lav reveal">
+          <h3 class="relay-side__title">接力作品</h3>
+          <nav class="relay-cats" id="relayCats" aria-label="作品分类"></nav>
+          <h3 class="relay-side__title">成员名单</h3>
+          <nav class="relay-cats" aria-label="成员名单视图">
+            <button type="button" class="relay-cat" id="relayMembersBtn" aria-controls="relayMembersView" aria-pressed="false">查看成员名单</button>
+          </nav>
+        </aside>
+        <section class="relay-content">
+          <h3 class="relay-content__title" id="relayContentTitle">全部作品</h3>
+
+          <!-- 视图 1：接力作品 -->
+          <div class="relay-view" id="relayWorksView">
+            <div class="relay-grid" id="relayGrid" aria-live="polite">
+              <div class="relay-empty glass glass--frost reveal" id="relayEmpty">
+                <span class="relay-empty__flake" aria-hidden="true">∞</span>
+                <p class="relay-empty__title">接力棒还没人上传</p>
+                <p class="relay-empty__note">第一份接力作品还在路上，敬请期待！<br>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 视图 2：成员名单（页内子页面：点侧边栏「查看成员名单」进入，点年份分类切回） -->
+          <div class="relay-view" id="relayMembersView" hidden>
+            <p class="relay-view__note">
+              每一棒只记「第几棒 · 作者 · 说明 · 链接」。想看作品本身，点侧边栏的年份分类即可切回。
+            </p>
+            <div class="members-list" id="membersList" aria-live="polite"></div>
+          </div>
+        </section>
+      </div>
+
+    </section>
+  </main>
 
   <footer class="site-footer" id="footer">
     <div class="site-footer__inner">

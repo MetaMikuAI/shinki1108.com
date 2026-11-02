@@ -16,8 +16,9 @@
   -webkit-user-select: none;
   -webkit-touch-callout: none;          /* 手机上长按不弹系统菜单 */
   will-change: transform;
-  transform: translate3d(0, 0, 0);   /* 供 JS 读取安全区高度 */
+  transform: translate3d(0, 0, 0);
   view-transition-name: pet;         /* 跨页过渡时留在原地 */
+  --pet-safe-bottom: env(safe-area-inset-bottom, 0px);   /* 供 JS 读取安全区高度 */
 }
 .pet.is-dragging { cursor: grabbing; }
 
@@ -178,4 +179,8 @@
 /* iOS：底部安全区（home 指示条）不压住桌宠 */
 @supports (padding: env(safe-area-inset-bottom)) {
   .pet { padding-bottom: 0; }
+}
+/* 触屏设备：别显示 hover 相关的位移，避免点一下"粘住" */
+@media (hover: none) {
+  .pet__poster:hover .vid__play { transform: none; }
 }

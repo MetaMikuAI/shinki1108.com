@@ -26,6 +26,41 @@
   <div id="bgStars" aria-hidden="true"></div>
   <script src="assets/js/stars.js"></script>
 
+  <div class="bg-aurora-curtains" aria-hidden="true">
+    <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="aurG1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffb6d0" stop-opacity=".5"/>
+          <stop offset=".45" stop-color="#e2608a" stop-opacity=".2"/>
+          <stop offset="1" stop-color="#e2608a" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="aurG2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#c79cf0" stop-opacity=".42"/>
+          <stop offset=".55" stop-color="#9b6ad0" stop-opacity=".15"/>
+          <stop offset="1" stop-color="#9b6ad0" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="aurG3" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffd0e0" stop-opacity=".34"/>
+          <stop offset=".55" stop-color="#d98ab8" stop-opacity=".12"/>
+          <stop offset="1" stop-color="#d98ab8" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="aurBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="13"/></filter>
+      </defs>
+      <g class="aurora-curve aurora-curve--a" filter="url(#aurBlur)">
+        <path d="M-90 -60 C 140 150 330 -90 570 70 C 770 185 950 -70 1190 90 C 1330 175 1470 30 1530 130 L 1530 600 C 1300 440 1090 660 870 535 C 650 420 430 640 210 515 C 40 430 -50 560 -90 500 Z" fill="url(#aurG1)"/>
+      </g>
+      <g class="aurora-curve aurora-curve--b" filter="url(#aurBlur)">
+        <path d="M-70 80 C 170 -50 350 190 570 70 C 810 -90 1010 190 1230 50 C 1370 -50 1490 70 1530 70 L 1530 500 C 1310 580 1090 350 910 475 C 690 605 470 395 250 475 C 90 535 -30 460 -70 500 Z" fill="url(#aurG2)"/>
+      </g>
+      <g class="aurora-curve aurora-curve--c" filter="url(#aurBlur)">
+        <path d="M30 180 C 250 70 470 210 710 130 C 930 60 1150 210 1390 130 L 1450 210 L 1450 440 C 1190 520 950 350 730 455 C 510 555 270 415 70 475 L 30 440 Z" fill="url(#aurG3)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="bg-glow bg-glow--a" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--b" aria-hidden="true"></div>
+
+
 
 
 
@@ -128,9 +163,22 @@
         「东方Project」及相关角色版权归 <strong>ZUN（上海爱丽丝幻乐团）</strong> 所有。
       </p>
 
+      <button type="button" class="egg-btn" id="shinkiEgg" aria-label="角落里的彩蛋" title="？">
+        <img src="assets/img/egg-secret.jpg" alt="">
+      </button>
       <p class="site-footer__copy">Made with 🖤 献给魔界之神 — <span id="year">2026</span> · <a class="text-link" href="index.html">返回首页</a></p>
     </div>
   </footer>
+
+  <!-- 彩蛋：找到「黑绮士 669」 -->
+  <div class="egg-modal" id="eggModal" hidden>
+    <div class="egg-modal__box" role="dialog" aria-modal="true" aria-labelledby="eggText">
+      <button type="button" class="egg-modal__close" id="eggClose" aria-label="关闭">×</button>
+      <img class="egg-modal__gif" src="assets/img/egg-669.gif" alt="神绮彩蛋动图">
+      <p class="egg-modal__text" id="eggText">恭喜你找到了神绮的黑绮士 669！</p>
+      <p class="egg-modal__hint">（点右上角 × 或按 Esc 关闭）</p>
+    </div>
+  </div>
 
   <script defer src="assets/js/main.js"></script>
   <script defer src="assets/js/manga.js"></script>

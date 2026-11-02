@@ -1,0 +1,433 @@
+/* =========================================================
+   同人画廊 · 「小小画廊」式样式
+   轨道跑马灯 / hover 放大卡片 / glb 全屏遮罩 / 管理面板
+   仅服务 gallery.html；复用 style.css 设计令牌。
+   ========================================================= */
+
+/* ---------- 无缝滚动轨道 ---------- */
+.gallery-wrap {
+  position: relative;
+  overflow: hidden;
+  padding: 10px 0 14px;
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+}
+.gallery-track {
+  display: flex;
+  gap: 18px;
+  will-change: transform;
+  cursor: grab;
+}
+.gallery-track:active { cursor: grabbing; }
+
+/* ---------- 卡片（等高容器 + 原比例图 = 横宽竖窄不裁剪） ---------- */
+.gcard {
+  position: relative;
+  flex: 0 0 auto;
+  height: 240px;
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: zoom-in;
+  border: 1px solid var(--glass-bd);
+  background:
+    radial-gradient(120% 90% at 20% 8%, rgba(226, 96, 138, .14), transparent 58%),
+    linear-gradient(160deg, var(--bg-2, #2c1526), var(--bg-1, #1d0f14));
+  box-shadow: 0 10px 30px rgba(20, 2, 18, .45);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.gcard img {
+  height: 100%;
+  width: auto;
+  display: block;
+}
+.gcard:hover,
+.gcard:focus-visible {
+  transform: scale(1.05);
+  box-shadow: 0 16px 40px rgba(20, 2, 18, .6);
+  border-color: rgba(252, 189, 243, .4);
+  z-index: 2;
+}
+.gcard:focus-visible { outline: 2px solid var(--ice); outline-offset: 2px; }
+.gcard--failed {
+  display: grid;
+  place-items: center;
+  width: 180px;
+  cursor: default;
+  font-size: .8rem;
+  color: var(--ink-faint);
+}
+
+/* 悬停说明条：标题 + 说明 + 作者（数据来自管理面板） */
+.gcard__cap {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 36px 14px 12px;
+  background: linear-gradient(180deg, transparent, rgba(26, 6, 14, .92) 48%);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .25s ease, transform .25s ease;
+  pointer-events: none;
+  min-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.gcard:hover .gcard__cap,
+.gcard:focus-visible .gcard__cap {
+  opacity: 1;
+  transform: none;
+}
+.gcard__cap b {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  letter-spacing: .05em;
+  color: var(--snow);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gcard__cap span {
+  font-size: .78rem;
+  color: var(--ink-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gcard__cap .gcard__author {
+  font-size: .72rem;
+  letter-spacing: .1em;
+  color: var(--ice-soft);
+  opacity: .92;
+}
+
+/* ---------- 全屏放大遮罩（glb） ---------- */
+.glb {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(12, 4, 7, .87);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility .3s ease;
+  cursor: zoom-out;
+}
+.glb.open { opacity: 1; visibility: visible; }
+
+.glb-body {
+  max-width: 100%;
+  max-height: 100%;
+  padding: 54px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  overflow: auto;
+  /* 大图已能完整显示，不需要滚动条：隐藏滚动槽，极端小屏仍可滑动 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: default;
+}
+.glb-body::-webkit-scrollbar { width: 0; height: 0; display: none; }
+.glb-body img {
+  max-width: 94vw;
+  max-height: 78vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .65);
+}
+
+.glb-cap {
+  text-align: center;
+  font-size: .95rem;
+  letter-spacing: .04em;
+  color: var(--ink-dim);
+  max-width: 60em;
+}
+.glb-cap b { font-size: 1.15rem; color: var(--snow); font-family: var(--font-serif); letter-spacing: .06em; }
+.glb-cap span { display: block; margin-top: 4px; font-size: .8rem; color: var(--ice-soft); letter-spacing: .12em; }
+.glb-cap em { display: block; margin-top: 6px; font-style: normal; font-size: .74rem; letter-spacing: .16em; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+
+.glb-close {
+  position: absolute;
+  top: 24px; right: 26px;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 200, 215, .4);
+  background: rgba(190, 50, 80, .85);
+  color: #fff;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, .5);
+  transition: background .2s ease, transform .2s ease;
+}
+.glb-close:hover { background: rgba(230, 66, 100, .95); transform: scale(1.08); }
+
+.glb-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 200, 248, .2);
+  background: rgba(61, 19, 35, .55);
+  color: var(--snow);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background .2s ease;
+}
+.glb-nav:hover { background: rgba(152, 58, 94, .7); }
+.glb-nav--prev { left: 26px; }
+.glb-nav--next { right: 26px; }
+
+/* ---------- 轨道下方：画廊图一览（中等间距瀑布流） ---------- */
+.gallery-overview__title {
+  margin: 38px 0 20px;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  letter-spacing: .24em;
+  padding-left: .24em;
+  color: var(--ice-soft);
+}
+.gallery-overview__title::before,
+.gallery-overview__title::after {
+  content: '❄';
+  font-size: .7em;
+  margin: 0 .8em;
+  vertical-align: middle;
+  opacity: .7;
+}
+.gallery-overview {
+  columns: 3 240px;
+  column-gap: 18px;
+}
+.gcard--ov {
+  width: 100%;
+  height: auto;
+  margin: 0 0 18px;
+  break-inside: avoid;
+  border-radius: 12px;
+}
+.gcard--ov img {
+  width: 100%;
+  height: auto;
+}
+.gcard--ov:hover {
+  transform: scale(1.03);
+  box-shadow: 0 14px 34px rgba(20, 2, 18, .55);
+}
+
+
+
+/* ---------- 加载骨架占位 ---------- */
+.gallery-track .skel {
+  flex: 0 0 auto;
+  width: clamp(280px, 26vw, 360px);
+  height: 240px;
+}
+.gallery-overview .skel {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  margin: 0 0 18px;
+  break-inside: avoid;
+}
+
+/* ---------- 管理面板（管理员可见） ---------- */
+.manager-panel {
+  margin: 26px 0 0;
+  padding: 22px 24px 20px;
+  border-radius: var(--radius);
+}
+.manager-panel[hidden] { display: none; }
+.manager-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.manager-panel__head strong {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  letter-spacing: .08em;
+  color: var(--snow);
+}
+.manager-panel__upload h3,
+.manager-panel__list h3 {
+  margin: 18px 0 10px;
+  font-size: .9rem;
+  letter-spacing: .1em;
+  color: var(--lav);
+}
+.manager-panel__cells {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+.manager-panel__row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.manager-panel__field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1 1 220px;
+  font-size: .82rem;
+  color: var(--ink-dim);
+  letter-spacing: .06em;
+}
+.manager-panel__field input,
+.manager-panel__field textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-bd);
+  background: rgba(33, 7, 17, .55);
+  color: var(--ink);
+  font: inherit;
+  font-size: .92rem;
+  resize: vertical;
+}
+.manager-panel__field input:focus,
+.manager-panel__field textarea:focus {
+  outline: none;
+  border-color: var(--ice);
+  box-shadow: 0 0 0 3px rgba(230, 123, 168, .15);
+}
+.manager-panel__list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+.manager-panel__row--item {
+  align-items: flex-start;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(37, 9, 20, .4);
+}
+.manager-panel__thumb {
+  flex: 0 0 84px;
+  width: 84px;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--glass-bd);
+}
+.manager-panel__fields {
+  flex: 1 1 260px;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.manager-panel__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.manager-panel__none {
+  margin: 6px 0;
+  color: var(--ink-faint);
+  font-size: .85rem;
+}
+.manager-panel__foot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.manager-panel__message {
+  margin: 0;
+  font-size: .85rem;
+  color: #eaa6c2;
+}
+.manager-panel__message.is-error { color: #ffa3a3; }
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 760px) {
+  .gallery-track { gap: 12px; }
+  .gcard { height: 190px; }
+  .gallery-overview { columns: 2 130px; column-gap: 12px; }
+  .gcard--ov { margin-bottom: 12px; }
+  
+.glb-body {
+  max-width: 100%;
+  max-height: 100%;
+  padding: 54px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  overflow: auto;
+  /* 大图已能完整显示，不需要滚动条：隐藏滚动槽，极端小屏仍可滑动 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: default;
+}
+.glb-body::-webkit-scrollbar { width: 0; height: 0; display: none; }
+  .glb-nav--prev { left: 10px; }
+  .glb-nav--next { right: 10px; }
+  .glb-close { top: 12px; right: 14px; }
+  /* 触屏无悬停：说明条常显 */
+  .gcard__cap { opacity: 1; transform: none; padding: 26px 10px 10px; }
+  .gallery-toolbar { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .manager-panel { padding: 16px 14px; }
+  .manager-panel__row--item { flex-direction: column; }
+  .manager-panel__thumb { flex: 0 0 auto; width: 100%; aspect-ratio: 16 / 10; }
+}
+
+/* ---------- 减弱动效（保留悬停放大与信息条） ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .gcard,
+  .gcard__cap,
+  .glb-close,
+  .glb-nav {
+    transition: none !important;
+  }
+  .gcard:hover,
+  .gcard:focus-visible { transform: scale(1.05); }
+}
+
+/* ---------- UX 增强样式 ---------- */
+.gallery-track.is-dragging { cursor: grabbing; }
+.gallery-more {
+  display: block;
+  margin: 18px auto 0;
+  break-inside: avoid;
+}
+.manager-panel__tools { display: flex; gap: 8px; flex-wrap: wrap; }
+body.is-dropping::before {
+  content: '松开鼠标，把图片放进画廊 ❄';
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: grid;
+  place-items: center;
+  background: rgba(31, 5, 15, .72);
+  border: 3px dashed rgba(255, 190, 246, .65);
+  color: var(--snow);
+  font-size: 1.15rem;
+  letter-spacing: .12em;
+  pointer-events: none;
+}

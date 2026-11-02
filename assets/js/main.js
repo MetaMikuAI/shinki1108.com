@@ -181,6 +181,44 @@
     });
   })();
 
+  /* ==================== 13. 开屏 ==================== */
+  (function initSplash() {
+    const splash = $('#splash');
+    if (!splash) return;
+    let seen = false;
+    try { seen = sessionStorage.getItem('shinki-splash-done') === '1'; } catch (_) { seen = false; }
+    if (seen && !/splash=1/.test(location.search)) { splash.remove(); return; }
+    document.body.classList.add('is-splashing');
+    let closed = false;
+    const close = () => {
+      if (closed) return;
+      closed = true;
+      try { sessionStorage.setItem('shinki-splash-done', '1'); } catch (_) {}
+      splash.classList.add('is-closing');
+      document.body.classList.remove('is-splashing');
+      setTimeout(() => splash.remove(), 800);
+    };
+    if (reduceMotion) {
+      splash.classList.add('is-closing');
+      document.body.classList.remove('is-splashing');
+      setTimeout(() => splash.remove(), 300);
+      return;
+    }
+    const enter = $('#splashEnter');
+    if (enter) enter.addEventListener('click', (e) => { e.stopPropagation(); close(); });
+    splash.addEventListener('click', close);
+    // 多种离开方式防卡死：任意键 / 任意点击 / 自动结束 / 滚动锁兜底
+    const anyClose = () => close();
+    document.addEventListener('keydown', anyClose, { once: true });
+    window.addEventListener('pointerdown', anyClose, { once: true, capture: true });
+    setTimeout(close, 3600);
+    setTimeout(() => { document.body.classList.remove('is-splashing'); }, 6000);
+    // 开屏进入 = 一次用户手势：顺手启动背景音乐（默认开启）
+    splash.addEventListener('click', () => {
+      try { document.dispatchEvent(new CustomEvent('shinki-bgm-kick')); } catch (_) {}
+    });
+  })();
+
   /* ==================== 17. 阅读进度条 + 回到顶部 ==================== */
   (function initReadingUI() {
     const bar = document.createElement('div');
@@ -207,6 +245,42 @@
     window.addEventListener('resize', update);
     top.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     update();
+  })();
+
+  /* ==================== 18. 彩蛋 · 黑绮士 669 ==================== */
+  (() => {
+    const btn = $('#shinkiEgg');
+    const modal = $('#eggModal');
+    const closeBtn = $('#eggClose');
+    if (!btn || !modal) return;
+    const NEED = 3;                    // 点三次
+    let hits = 0;
+    let resetTimer = 0;
+
+    function open() {
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      if (closeBtn) closeBtn.focus();
+    }
+    function close() {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      hits = 0;
+    }
+    btn.addEventListener('click', () => {
+      hits += 1;
+      btn.classList.remove('is-hit');
+      void btn.offsetWidth;
+      btn.classList.add('is-hit');     // 每点一下弹一下
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => { hits = 0; }, 2500);   // 2.5 秒内连点才计数
+      if (hits >= NEED) open();
+    });
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) close();
+    });
   })();
 
   /* ==================== 19. 主题曲播放器（自绘 · 魔界之门） ==================== */
@@ -285,6 +359,47 @@
     });
 
     paintProgress();
+  })();
+
+  /* ==================== 20. 开屏：黑球定位（cover 裁切换算） ==================== */
+  (() => {
+    const splash = $('#splash');
+    if (!splash) return;
+    const fig = splash.querySelector('.splash__fig');
+    const img = splash.querySelector('.splash__img');
+    const btn = $('#splashEnter');
+    if (!fig || !img || !btn) return;
+
+    const BX = 0.525;   // 黑球横向位置（可调：往右加大、往左减小）   // 黑球在图片中的相对位置
+    const BY = 0.769;
+    const MARGIN = 52;  // 夹到屏幕内，保证永远可点
+
+    let lastW = 0, lastH = 0;
+    function placeSplashBall(force) {
+      const W = fig.clientWidth || window.innerWidth;
+      const H = fig.clientHeight || window.innerHeight;
+      // 移动端地址栏伸缩会让高度小幅抖动：宽度不变、高度变化 < 90px 就忽略，避免按钮跟着跳
+      if (!force && W === lastW && Math.abs(H - lastH) < 90) return;
+      lastW = W; lastH = H;
+      const iw = img.naturalWidth || 960;
+      const ih = img.naturalHeight || 622;
+      const scale = Math.max(W / iw, H / ih);       // object-fit: cover 的缩放
+      const dw = iw * scale, dh = ih * scale;
+      const offX = (dw - W) / 2, offY = (dh - H) / 2;
+      let x = BX * dw - offX;
+      let y = BY * dh - offY;
+      x = Math.min(Math.max(x, MARGIN), Math.max(MARGIN, W - MARGIN));
+      y = Math.min(Math.max(y, MARGIN), Math.max(MARGIN, H - MARGIN));
+      btn.style.left = x + 'px';
+      btn.style.top = y + 'px';
+    }
+
+    placeSplashBall(true);
+    window.addEventListener('resize', () => placeSplashBall(false), { passive: true });
+    window.addEventListener('orientationchange', () => setTimeout(() => placeSplashBall(true), 220));
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', () => placeSplashBall(false));
+    if (img.complete) placeSplashBall(true); else img.addEventListener('load', () => placeSplashBall(true));
+    window.addEventListener('load', () => placeSplashBall(true));
   })();
 
   /* ==================== 22. 离开页面时停止所有媒体（手机端切页不再"后台还在放"） ==================== */

@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>同人画廊 — 神绮 · 魔界之神 · 同人二创展示</title>
-  <meta name="description" content="神绮（Shinki）同人画廊：收藏关于魔界之神的画作。">
+  <meta name="description" content="神绮（Shinki）同人画廊：自动轮播展示同人画作，悬停查看说明，点击全屏浏览。">
   <link rel="icon" href="assets/img/favicon.png" type="image/png">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/gallery.css">
   <link rel="stylesheet" href="assets/css/shinki.css">
   <link rel="stylesheet" href="assets/css/pet.css">
   <link rel="expect" href="#footer" blocking="render">
@@ -38,6 +39,41 @@
   <div id="bgStars" aria-hidden="true"></div>
   <script src="assets/js/stars.js"></script>
 
+  <div class="bg-aurora-curtains" aria-hidden="true">
+    <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="aurG1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffb6d0" stop-opacity=".5"/>
+          <stop offset=".45" stop-color="#e2608a" stop-opacity=".2"/>
+          <stop offset="1" stop-color="#e2608a" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="aurG2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#c79cf0" stop-opacity=".42"/>
+          <stop offset=".55" stop-color="#9b6ad0" stop-opacity=".15"/>
+          <stop offset="1" stop-color="#9b6ad0" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="aurG3" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffd0e0" stop-opacity=".34"/>
+          <stop offset=".55" stop-color="#d98ab8" stop-opacity=".12"/>
+          <stop offset="1" stop-color="#d98ab8" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="aurBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="13"/></filter>
+      </defs>
+      <g class="aurora-curve aurora-curve--a" filter="url(#aurBlur)">
+        <path d="M-90 -60 C 140 150 330 -90 570 70 C 770 185 950 -70 1190 90 C 1330 175 1470 30 1530 130 L 1530 600 C 1300 440 1090 660 870 535 C 650 420 430 640 210 515 C 40 430 -50 560 -90 500 Z" fill="url(#aurG1)"/>
+      </g>
+      <g class="aurora-curve aurora-curve--b" filter="url(#aurBlur)">
+        <path d="M-70 80 C 170 -50 350 190 570 70 C 810 -90 1010 190 1230 50 C 1370 -50 1490 70 1530 70 L 1530 500 C 1310 580 1090 350 910 475 C 690 605 470 395 250 475 C 90 535 -30 460 -70 500 Z" fill="url(#aurG2)"/>
+      </g>
+      <g class="aurora-curve aurora-curve--c" filter="url(#aurBlur)">
+        <path d="M30 180 C 250 70 470 210 710 130 C 930 60 1150 210 1390 130 L 1450 210 L 1450 440 C 1190 520 950 350 730 455 C 510 555 270 415 70 475 L 30 440 Z" fill="url(#aurG3)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="bg-glow bg-glow--a" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--b" aria-hidden="true"></div>
+
+
 
 
 
@@ -60,7 +96,41 @@
     </div>
   </header>
 
-  <main id="main"><section class="section"><header class="section__head"><p class="section__kicker">SHINKI · GALLERY</p><h1 class="section__title">同人画廊</h1><p class="section__lead">收藏关于魔界之神的每一份灵感。</p></header><div class="notice-card glass"><p class="notice-card__lead">这里还没有作品。</p><p>先去看看魔界之神的四格日常吧。</p><a class="btn btn--primary" href="manga.html">阅读四格与表情包 →</a></div></section></main>
+  <main id="main">
+    <!-- ===================== 同人画廊 ===================== -->
+    <section class="section page-head" id="gallery">
+      <header class="section__head reveal">
+        <p class="section__kicker">FAN GALLERY</p>
+        <h2 class="section__title">同人画廊</h2>
+        <div class="section__divider" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 1v22M3.5 6.8l17 10.4M20.5 6.8l-17 10.4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+        </div>
+      </header>
+
+      <p class="gallery-intro reveal">
+        神绮的魔界展馆——作品自动巡游，<strong>悬停卡片</strong>放大查看说明，<strong>点击</strong>进入全屏。
+      </p>
+
+      <div class="gallery-toolbar reveal">
+        <span class="gallery-toolbar__note" id="uploadCount" aria-live="polite"></span>
+      </div>
+
+      <!-- 无缝跑马灯轨道：内容由 gallery.js 渲染 -->
+      <div class="gallery-wrap" id="galleryWrap" aria-label="画廊自动滚动">
+        <div class="gallery-track" id="galleryTrack"></div>
+      </div>
+
+      <h3 class="gallery-overview__title">画廊图一览</h3><div class="gallery-overview" id="galleryOverview" aria-label="画廊图一览"></div>
+
+      <p class="gallery-hint reveal" id="galleryEmptyHint" hidden>
+        展馆里还没有作品……魔界的第一幅画，正在路上了。
+      </p>
+      <p class="gallery-hint reveal">
+        更多接力作品请前往<a class="text-link" href="relay.html">接力作品</a>欣赏。
+      </p>
+    </section>
+
+</main>
 
   <footer class="site-footer" id="footer">
     <div class="site-footer__inner">
@@ -70,12 +140,12 @@
             <p class="site-footer__note">
         本页面为非商业性同人二创展示，与官方无隶属关系。<br>
         「东方Project」及相关角色、乐曲版权归 <strong>ZUN（上海爱丽丝幻乐团）</strong> 所有；<br>
-        同人作品版权归各自作者所有，请勿另行商用。
+        画廊中上传的图片版权归各自作者所有，请勿另行商用。
       </p>
       <p class="site-footer__copy">Made with 🖤 献给魔界之神 — <span id="year">2026</span> · <a class="text-link" href="index.html">返回主页面</a></p>
     </div>
   </footer>
-  <script defer src="assets/js/main.js"></script>
+  <script defer src="assets/js/main.js"></script><script defer src="assets/js/gallery.js"></script>
   <script defer src="assets/js/pet.js"></script>
   <script defer src="assets/js/pet-boot.js"></script>
 </body>
