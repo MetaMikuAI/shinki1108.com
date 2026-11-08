@@ -527,6 +527,7 @@
   }
 
   function openLightbox(item) {
+    if (window.shinkiTrack) shinkiTrack('work_open', { channel: 'relay', id: String(item.id) });
     const list = lbList();
     const idx = list.findIndex((x) => x.id === item.id);
     lbIndex = idx < 0 ? 0 : idx;

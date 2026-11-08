@@ -94,6 +94,7 @@
     /* ---- 点击 → 就地加载播放器 ---- */
     var frame = null;
     poster.addEventListener('click', function () {
+      if (window.shinkiTrack) shinkiTrack('video_click', { bvid: item.bvid });
       if (frame) return;
       frame = document.createElement('iframe');
       frame.className = 'vid__frame';

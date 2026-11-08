@@ -91,6 +91,7 @@
     return lb;
   }
   function openLB(item, index) {
+    if (item && window.shinkiTrack) shinkiTrack('work_open', { channel: 'gallery', id: String(item.id || index) });
     if (!works.length) return;
     lbIndex = Math.max(0, Math.min(index, works.length - 1));
     ensureLB();

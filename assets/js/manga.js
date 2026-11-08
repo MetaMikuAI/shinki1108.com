@@ -100,7 +100,7 @@
     imgs.forEach((i) => lazy.observe(i));
 
     document.querySelectorAll('.mg-card').forEach((card) => {
-      const open = () => openCollection(card.dataset.id);
+      const open = () => { if (window.shinkiTrack) shinkiTrack('work_open', { channel: 'manga', id: card.dataset.id }); openCollection(card.dataset.id); };
       card.addEventListener('click', open);
       card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
     });
